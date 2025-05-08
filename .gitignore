@@ -1,0 +1,64 @@
+# Archivos de compilación
+bin/
+obj/
+
+# Archivos de usuario de Visual Studio
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+
+# Archivos de configuración de Visual Studio
+.vs/
+.vscode/
+
+# Archivos de paquetes
+*.nupkg
+packages/
+*.snupkg
+
+# Archivos de configuración de NuGet
+*.nuspec
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+# Archivos de logs
+*.log
+
+# Archivos de configuración de Rider
+.idea/
+
+# Archivos de configuración de ASP.NET
+appsettings*.json
+appsettings*.Development.json
+
+# Archivos de caché
+*.cache
+*.db
+
+# Archivos de temporales
+*.tmp
+*.temp
+*.pidb
+*.sln.ide
+
+# Archivos de pruebas
+TestResults/
+*.trx
+
+# Archivos de publicación
+publish/
+
+# Archivos de backup
+*.bak
+*.swp
+
+# Otros
+*.pdb
+*.mdb
+*.dbmdl
+*.dbproj.schemaview
+*.dbproj.user
+*.jfm
+*.jfm.user

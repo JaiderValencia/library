@@ -5,11 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class Niveles_tiene_LibrosAplicacion: INiveles_tiene_LibrosAplicacion
+    class TiposDocumentosAplicacion: ITiposDocumentosAplicacion
     {
         private Conexion conexion = new Conexion();
 
-        public Niveles_tiene_Libros? Borrar(Niveles_tiene_Libros entidad)
+        public List<TiposDocumentos>? PorNombre(string nombre)
+        {
+            return this.conexion!.TiposDocumentos!
+                .Where(x => x.Nombre!.Contains(nombre))
+                .ToList();
+        }
+
+        public TiposDocumentos? Borrar(TiposDocumentos entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -17,12 +24,12 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            this.conexion!.Niveles_tiene_Libros!.Remove(entidad);
+            this.conexion!.TiposDocumentos!.Remove(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public Niveles_tiene_Libros? Guardar(Niveles_tiene_Libros? entidad)
+        public TiposDocumentos? Guardar(TiposDocumentos? entidad)
         {            
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -30,22 +37,22 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad.Id != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            this.conexion!.Niveles_tiene_Libros!.Add(entidad);
+            this.conexion!.TiposDocumentos!.Add(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public List<Niveles_tiene_Libros> Listar()
+        public List<TiposDocumentos> Listar()
         {
-            return this.conexion!.Niveles_tiene_Libros!.Take(20).ToList();
+            return this.conexion!.TiposDocumentos!.Take(20).ToList();
         }
 
-        public Niveles_tiene_Libros? PorId(int Id)
+        public TiposDocumentos? PorId(int Id)
         {
-            return this.conexion!.Niveles_tiene_Libros!.FirstOrDefault(x => x.Id==Id);
+            return this.conexion!.TiposDocumentos!.FirstOrDefault(x => x.Id==Id);
         }
 
-        public Niveles_tiene_Libros? Modificar(Niveles_tiene_Libros? entidad)
+        public TiposDocumentos? Modificar(TiposDocumentos? entidad)
 
 
         {
@@ -55,9 +62,9 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            entidad.Libro = 2;
+            entidad.Nombre = "Nombre cambiado";
 
-            var entry = this.conexion!.Entry<Niveles_tiene_Libros>(entidad);
+            var entry = this.conexion!.Entry<TiposDocumentos>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
             return entidad;

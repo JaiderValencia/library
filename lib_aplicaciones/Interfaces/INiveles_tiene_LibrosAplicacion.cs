@@ -3,13 +3,13 @@ using lib_repositorios.Implementaciones;
 
 namespace lib_aplicaciones.Interfaces
 {
-    interface IAutoresAplicacion
+    interface INiveles_tiene_LibrosAplicacion
     {       
-        Autores? PorId(int Id);
-        List<Autores>? PorNombre(string nombre);
-        List<Autores> Listar();
-        Autores? Guardar(Autores? entidad);
-        Autores? Modificar(Autores? entidad);
-        Autores? Borrar(Autores entidad);
+        Niveles_tiene_Libros? PorId(int Id);
+        List<Niveles_tiene_Libros> Listar();
+        Niveles_tiene_Libros? Guardar(Niveles_tiene_Libros? entidad);
+        Niveles_tiene_Libros? Modificar(Niveles_tiene_Libros? entidad);
+        Niveles_tiene_Libros? Borrar(Niveles_tiene_Libros entidad);
+        
     }
 }

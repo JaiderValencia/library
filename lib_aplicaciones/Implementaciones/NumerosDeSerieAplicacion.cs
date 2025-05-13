@@ -5,11 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class Niveles_tiene_LibrosAplicacion: INiveles_tiene_LibrosAplicacion
+    class NumerosDeSerieAplicacion: INumerosDeSerieAplicacion
     {
         private Conexion conexion = new Conexion();
 
-        public Niveles_tiene_Libros? Borrar(Niveles_tiene_Libros entidad)
+        public List<NumerosDeSerie>? PorNumeroSerie(string NumeroSerie)
+        {
+            return this.conexion!.NumerosDeSerie!
+                .Where(x => x.NumeroSerie!.Contains(NumeroSerie))
+                .ToList();
+        }
+
+        public NumerosDeSerie? Borrar(NumerosDeSerie entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -17,12 +24,12 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            this.conexion!.Niveles_tiene_Libros!.Remove(entidad);
+            this.conexion!.NumerosDeSerie!.Remove(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public Niveles_tiene_Libros? Guardar(Niveles_tiene_Libros? entidad)
+        public NumerosDeSerie? Guardar(NumerosDeSerie? entidad)
         {            
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -30,22 +37,22 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad.Id != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            this.conexion!.Niveles_tiene_Libros!.Add(entidad);
+            this.conexion!.NumerosDeSerie!.Add(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public List<Niveles_tiene_Libros> Listar()
+        public List<NumerosDeSerie> Listar()
         {
-            return this.conexion!.Niveles_tiene_Libros!.Take(20).ToList();
+            return this.conexion!.NumerosDeSerie!.Take(20).ToList();
         }
 
-        public Niveles_tiene_Libros? PorId(int Id)
+        public NumerosDeSerie? PorId(int Id)
         {
-            return this.conexion!.Niveles_tiene_Libros!.FirstOrDefault(x => x.Id==Id);
+            return this.conexion!.NumerosDeSerie!.FirstOrDefault(x => x.Id==Id);
         }
 
-        public Niveles_tiene_Libros? Modificar(Niveles_tiene_Libros? entidad)
+        public NumerosDeSerie? Modificar(NumerosDeSerie? entidad)
 
 
         {
@@ -55,9 +62,9 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            entidad.Libro = 2;
+            entidad.NumeroSerie = "Numero de serie cambiado";
 
-            var entry = this.conexion!.Entry<Niveles_tiene_Libros>(entidad);
+            var entry = this.conexion!.Entry<NumerosDeSerie>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
             return entidad;

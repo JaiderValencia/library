@@ -5,11 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class Niveles_tiene_LibrosAplicacion: INiveles_tiene_LibrosAplicacion
+    class PrestamosAplicacion: IPrestamosAplicacion
     {
         private Conexion conexion = new Conexion();
 
-        public Niveles_tiene_Libros? Borrar(Niveles_tiene_Libros entidad)
+        public List<Prestamos>? PorFechaInicio(DateTime FechaInicio)
+        {
+            return this.conexion!.Prestamos!
+                .Where(x => x.FechaInicio.Date == FechaInicio.Date)
+                .ToList();
+        }
+
+        public Prestamos? Borrar(Prestamos entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -17,12 +24,12 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            this.conexion!.Niveles_tiene_Libros!.Remove(entidad);
+            this.conexion!.Prestamos!.Remove(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public Niveles_tiene_Libros? Guardar(Niveles_tiene_Libros? entidad)
+        public Prestamos? Guardar(Prestamos? entidad)
         {            
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -30,22 +37,22 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad.Id != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            this.conexion!.Niveles_tiene_Libros!.Add(entidad);
+            this.conexion!.Prestamos!.Add(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public List<Niveles_tiene_Libros> Listar()
+        public List<Prestamos> Listar()
         {
-            return this.conexion!.Niveles_tiene_Libros!.Take(20).ToList();
+            return this.conexion!.Prestamos!.Take(20).ToList();
         }
 
-        public Niveles_tiene_Libros? PorId(int Id)
+        public Prestamos? PorId(int Id)
         {
-            return this.conexion!.Niveles_tiene_Libros!.FirstOrDefault(x => x.Id==Id);
+            return this.conexion!.Prestamos!.FirstOrDefault(x => x.Id==Id);
         }
 
-        public Niveles_tiene_Libros? Modificar(Niveles_tiene_Libros? entidad)
+        public Prestamos? Modificar(Prestamos? entidad)
 
 
         {
@@ -55,9 +62,9 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            entidad.Libro = 2;
+            entidad.NumeroSerie = 2;
 
-            var entry = this.conexion!.Entry<Niveles_tiene_Libros>(entidad);
+            var entry = this.conexion!.Entry<Prestamos>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
             return entidad;

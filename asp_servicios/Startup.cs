@@ -23,13 +23,16 @@ namespace asp_servicios
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             //services.AddSwaggerGen();
+
             // Repositorios
             services.AddScoped<IConexion, Conexion>();
+
             // Aplicaciones
-            services.AddScoped<IDistribuidoresAplicacion, DistribuidoresAplicacion>();
-            services.AddScoped<IProductosAplicacion, ProductosAplicacion>();
+            services.AddScoped<IAutoresAplicacion, AutoresAplicacion>();
+
             // Controladores
             services.AddScoped<TokenController, TokenController>();
+
 
             services.AddCors(o => o.AddDefaultPolicy(b => b.AllowAnyOrigin()));
         }

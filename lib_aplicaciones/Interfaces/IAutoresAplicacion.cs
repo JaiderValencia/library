@@ -3,8 +3,8 @@ using lib_repositorios.Implementaciones;
 
 namespace lib_aplicaciones.Interfaces
 {
-    interface IAutoresAplicacion
-    {       
+    public interface IAutoresAplicacion
+    {
         Autores? PorId(int Id);
         List<Autores>? PorNombre(string nombre);
         List<Autores> Listar();

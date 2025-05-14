@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class AutoresAplicacion: IAutoresAplicacion
+    public class AutoresAplicacion : IAutoresAplicacion
     {
         private Conexion conexion = new Conexion();
 
@@ -30,7 +30,7 @@ namespace lib_aplicaciones.Implementaciones
         }
 
         public Autores? Guardar(Autores? entidad)
-        {            
+        {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
@@ -49,12 +49,10 @@ namespace lib_aplicaciones.Implementaciones
 
         public Autores? PorId(int Id)
         {
-            return this.conexion!.Autores!.FirstOrDefault(x => x.Id==Id);
+            return this.conexion!.Autores!.FirstOrDefault(x => x.Id == Id);
         }
 
         public Autores? Modificar(Autores? entidad)
-
-
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");

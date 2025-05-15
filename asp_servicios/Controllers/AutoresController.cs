@@ -54,7 +54,7 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
-        public string PorCodigo() { 
+        public string PorId() { 
             var respuesta = new Dictionary<string, object>();
             try
             {
@@ -177,10 +177,8 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-
-                var entidad = JsonConversor.ConvertirAObjeto<Autores>(JsonConversor.ConvertirAString(datos["Entidad"]));
-
-                entidad = this.iAplicacion!.Borrar(entidad);
+                
+                var entidad = this.iAplicacion!.Borrar(Convert.ToInt32(datos["id"]));
 
                 respuesta["Entidad"] = entidad!;
                 respuesta["Respuesta"] = "OK";

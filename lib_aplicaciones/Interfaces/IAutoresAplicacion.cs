@@ -10,6 +10,6 @@ namespace lib_aplicaciones.Interfaces
         List<Autores> Listar();
         Autores? Guardar(Autores? entidad);
         Autores? Modificar(Autores? entidad);
-        Autores? Borrar(Autores entidad);
+        Autores? Borrar(int Id);
     }
 }

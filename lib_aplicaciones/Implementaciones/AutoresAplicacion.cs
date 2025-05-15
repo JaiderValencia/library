@@ -16,13 +16,12 @@ namespace lib_aplicaciones.Implementaciones
                 .ToList();
         }
 
-        public Autores? Borrar(Autores entidad)
+        public Autores? Borrar(int id)
         {
-            if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+            var entidad = this.conexion.Autores!.FirstOrDefault(Autor => Autor.Id == id);
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad == null)
+                throw new Exception("No se guardó ese autor");
 
             this.conexion!.Autores!.Remove(entidad);
             this.conexion.SaveChanges();

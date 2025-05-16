@@ -29,10 +29,10 @@ namespace asp_servicios
 
             // Aplicaciones
             services.AddScoped<IAutoresAplicacion, AutoresAplicacion>();
+            services.AddScoped<ICategoriasAplicacion, CategoriasAplicacion>();
 
             // Controladores
             services.AddScoped<TokenController, TokenController>();
-
 
             services.AddCors(o => o.AddDefaultPolicy(b => b.AllowAnyOrigin()));
         }

@@ -9,7 +9,7 @@ CREATE TABLE [Roles](
 	[Nombre] NVARCHAR(50)
 );
 
-CREATE TABLE [Usuarios](
+CREATE TABLE [Administradores](
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
 	[Nombre] TEXT NOT NULL,
 	[Password] TEXT NOT NULL,

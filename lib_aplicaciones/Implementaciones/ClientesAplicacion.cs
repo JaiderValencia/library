@@ -5,66 +5,68 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class ClientesAplicacion:IClientesAplicaciones
+    public class ClientesAplicacion : IClientesAplicaciones
     {
         private Conexion conexion = new Conexion();
-       
+
         public Clientes? PorId(int Id)
         {
-            return this.conexion.Clientes!.FirstOrDefault(cliente => cliente.Id == Id);
+            return this.conexion.Clientes!.Include(Cliente => Cliente._TipoDocumento).FirstOrDefault(cliente => cliente.Id == Id);
         }
 
-        public Clientes? PorNombre(string nombre)
+        public List<Clientes> PorNombre(string nombre)
         {
-            return this.conexion.Clientes!.FirstOrDefault(cliente => cliente.Nombre == nombre);
+            return this.conexion.Clientes!.Include(Cliente => Cliente._TipoDocumento).Where(cliente => cliente.Nombre!.Contains(nombre)).ToList();
         }
 
-        public Clientes? PorDocumento(string documento)
+        public List<Clientes> PorDocumento(string documento)
         {
-            return this.conexion.Clientes!.FirstOrDefault(cliente => cliente.Documento == documento);
+            return this.conexion.Clientes!.Include(Cliente => Cliente._TipoDocumento).Where(cliente => cliente.Documento!.Contains(documento)).ToList();;
         }
 
-        public List<Clientes> Listar()
-        {            
-            return this.conexion.Clientes!.Take(20).ToList();
+        public List<Clientes> Listar(int pagina = 1, int tamañoPagina = 20)
+        {
+            return this.conexion.Clientes!
+                .Include(Cliente => Cliente._TipoDocumento)
+                .Skip((pagina - 1) * tamañoPagina)
+                .Take(tamañoPagina).ToList();
         }
 
-        public Clientes? Guardar(Clientes? entidad)
+        public Clientes? Guardar(Clientes entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad!.Id != 0)
+                throw new Exception("lbYaSeGuardo");
 
             this.conexion.Clientes!.Add(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public Clientes? Modificar(Clientes? entidad)
+        public Clientes? Modificar(Clientes entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
-
-            entidad.Nombre = "Nombre cambiado";
-
+            
             var entry = this.conexion.Clientes!.Entry(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public Clientes? Borrar(Clientes entidad)
+        public Clientes? Borrar(int id)
         {
-            if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+            var entidad = this.conexion.Clientes!.FirstOrDefault(Cliente => Cliente.Id == id);
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad == null)
+            {
+                throw new Exception("No existe ese cliente");
+            }
 
             this.conexion.Clientes!.Remove(entidad);
             this.conexion.SaveChanges();

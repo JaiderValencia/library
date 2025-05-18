@@ -2,14 +2,14 @@
 
 namespace lib_aplicaciones.Interfaces
 {
-    interface IClientesAplicaciones
+    public interface IClientesAplicaciones
     {
         Clientes? PorId(int Id);
-        Clientes? PorNombre(string nombre);
-        Clientes? PorDocumento(string documento);
-        List<Clientes> Listar();
-        Clientes? Guardar(Clientes? entidad);
-        Clientes? Modificar(Clientes? entidad);
-        Clientes? Borrar(Clientes entidad);
+        List<Clientes> PorNombre(string nombre);
+        List<Clientes> PorDocumento(string documento);
+        List<Clientes> Listar(int pagina, int tamañoPagina);
+        Clientes? Guardar(Clientes entidad);
+        Clientes? Modificar(Clientes entidad);
+        Clientes? Borrar(int id);
     }
 }

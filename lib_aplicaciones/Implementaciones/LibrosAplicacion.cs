@@ -9,9 +9,14 @@ namespace lib_aplicaciones.Implementaciones
     {
         private Conexion conexion = new Conexion();
 
-        public List<Libros> Listar()
+        public List<Libros> Listar(int pagina = 1, int tamañoPagina = 20)
         {
-            return this.conexion.Libros!.Take(20).ToList();
+            return this.conexion.Libros!
+            .Skip((pagina - 1) * tamañoPagina)
+            .Take(tamañoPagina)
+            .Include(libro => libro._Autor)
+            .Include(libro => libro._Categoria)
+            .ToList();
         }
 
         public Libros? PorId(int Id)
@@ -19,18 +24,18 @@ namespace lib_aplicaciones.Implementaciones
             return this.conexion.Libros!.FirstOrDefault(libro => libro.Id == Id);
         }
 
-        public Libros? PorNombre(string nombre)
+        public List<Libros> PorNombre(string nombre)
         {
-            return this.conexion.Libros!.FirstOrDefault(libro => libro.Nombre == nombre);
+            return this.conexion.Libros!.Where(libro => libro.Nombre!.Contains(nombre)).ToList();
         }
 
-        public Libros? Guardar(Libros? entidad)
+        public Libros Guardar(Libros entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad!.Id != 0)
+                throw new Exception("lbYaSeGuardo");
 
             this.conexion.Libros!.Add(entidad);
             this.conexion.SaveChanges();
@@ -38,7 +43,7 @@ namespace lib_aplicaciones.Implementaciones
             return entidad;
         }
 
-        public Libros? Modificar(Libros? entidad)
+        public Libros Modificar(Libros entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -53,14 +58,13 @@ namespace lib_aplicaciones.Implementaciones
             return entidad;
         }
 
-        public Libros? Borrar(Libros entidad)
+        public Libros Borrar(int id)
         {
+            var entidad = this.conexion.Libros!.FirstOrDefault(libro => libro.Id == id);
+
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
-
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
-
+                throw new Exception("No existe esta libro");
+            
             this.conexion.Libros!.Remove(entidad);
             this.conexion.SaveChanges();
 

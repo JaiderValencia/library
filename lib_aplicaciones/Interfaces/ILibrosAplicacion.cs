@@ -4,11 +4,11 @@ namespace lib_aplicaciones.Interfaces
 {
     public interface ILibrosAplicacion
     {
-        List<Libros> Listar();
+        List<Libros> Listar(int pagina = 1, int tamañoPagina = 20);
         Libros? PorId(int Id);
-        Libros? PorNombre(string nombre);
-        Libros? Guardar(Libros? entidad);
-        Libros? Modificar(Libros? entidad);
-        Libros? Borrar(Libros entidad);
+        List<Libros> PorNombre(string nombre);
+        Libros Guardar(Libros entidad);
+        Libros Modificar(Libros entidad);
+        Libros Borrar(int id);
     }
 }

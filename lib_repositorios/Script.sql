@@ -29,7 +29,7 @@ CREATE TABLE Roles_tiene_Accesos(
 
 CREATE TABLE [Auditorias](
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
-	[Usuario] TEXT NOT NULL,
+	[Administrador] TEXT NOT NULL,
 	[Accion] TEXT NOT NULL,
 	[Fecha] DATETIME DEFAULT GETDATE()
 );
@@ -127,9 +127,9 @@ VALUES ('6',4)
 SELECT * FROM [Niveles]
 
 INSERT INTO [Categorias] ([Nombre],[Descripcion])
-VALUES ('Infantil','Libros para niños entre 5 y 12 años')
+VALUES ('Infantil','Libros para niï¿½os entre 5 y 12 aï¿½os')
 INSERT INTO [Categorias] ([Nombre],[Descripcion])
-VALUES ('Educación','Libros para bachillerato y universidad')
+VALUES ('Educaciï¿½n','Libros para bachillerato y universidad')
 INSERT INTO [Categorias] ([Nombre],[Descripcion])
 VALUES ('Fantasia','Libros para todas las edades')
 INSERT INTO [Categorias] ([Nombre],[Descripcion])
@@ -137,7 +137,7 @@ VALUES ('Novela','Libros de historias dramaticas')
 SELECT * FROM [Categorias]
 
 INSERT INTO [Autores] ([Nombre],[Apellido],[FechaNacimiento])
-VALUES ('Antonie','de Saint-Exupéry','1900/6/29')
+VALUES ('Antonie','de Saint-Exupï¿½ry','1900/6/29')
 INSERT INTO [Autores] ([Nombre],[Apellido],[FechaNacimiento])
 VALUES ('Aurelio','Baldor','1906/10/22')
 INSERT INTO [Autores] ([Nombre],[Apellido],[FechaNacimiento])
@@ -153,7 +153,7 @@ VALUES ('Algebra','1941/6/19',2,2)
 INSERT INTO [Libros] ([Nombre],[Fecha],[Categoria],[Autor])
 VALUES ('Harry Potter','1997/6/19',3,3)
 INSERT INTO [Libros] ([Nombre],[Fecha],[Categoria],[Autor])
-VALUES ('El señor de los anillos','1954/6/29',3,4)
+VALUES ('El seï¿½or de los anillos','1954/6/29',3,4)
 SELECT * FROM [Libros]
 
 INSERT INTO [NumerosDeSerie] ([NumeroSerie],[Libro])
@@ -177,13 +177,13 @@ VALUES (4,4)
 SELECT * FROM [Niveles_tiene_Libros]
 
 INSERT INTO [TiposDocumentos] ([Nombre],[NombreCorto])
-VALUES ('Cédula','CC')
+VALUES ('Cï¿½dula','CC')
 INSERT INTO [TiposDocumentos] ([Nombre],[NombreCorto])
 VALUES ('Tarjeta de indentidad','T.I')
 INSERT INTO [TiposDocumentos] ([Nombre],[NombreCorto])
 VALUES ('Pasaporte','P.P')
 INSERT INTO [TiposDocumentos] ([Nombre],[NombreCorto])
-VALUES ('Cédula de extranjería','C.E')
+VALUES ('Cï¿½dula de extranjerï¿½a','C.E')
 SELECT * FROM [TiposDocumentos]
 
 INSERT INTO [Clientes] ([Nombre],[Apellido],[Documento],[Direccion],[Correo],[Telefono],[TipoDocumento])

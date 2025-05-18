@@ -9,28 +9,30 @@ namespace lib_aplicaciones.Implementaciones
     {
         private Conexion conexion = new Conexion();
 
-        public List<Estanterias> Listar()
+        public List<Estanterias> Listar(int pagina = 1, int tamañoPagina = 20)
         {
-            return this.conexion.Estanterias!.Take(20).ToList();
-        }
+            return this.conexion.Estanterias!
+                .Skip((pagina - 1) * tamañoPagina)
+                .Take(tamañoPagina).ToList();
+        }        
 
         public Estanterias? PorId(int Id)
         {
             return this.conexion.Estanterias!.FirstOrDefault(estanteria => estanteria.Id == Id);
         }
 
-        public Estanterias? PorNombre(string nombre)
+        public List<Estanterias> PorNombre(string nombre)
         {
-            return this.conexion.Estanterias!.FirstOrDefault(estanteria => estanteria.Nombre == nombre);
+            return this.conexion.Estanterias!.Where(Estanteria => Estanteria.Nombre!.Contains(nombre)).ToList();
         }
 
-        public Estanterias? Guardar(Estanterias? entidad)
+        public Estanterias Guardar(Estanterias? entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad!.Id != 0)
+                throw new Exception("lbYaSeGuardo");
 
             this.conexion.Estanterias!.Add(entidad);
             this.conexion.SaveChanges();
@@ -38,7 +40,7 @@ namespace lib_aplicaciones.Implementaciones
             return entidad;
         }
 
-        public Estanterias? Modificar(Estanterias? entidad)
+        public Estanterias Modificar(Estanterias? entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -53,13 +55,12 @@ namespace lib_aplicaciones.Implementaciones
             return entidad;
         }
 
-        public Estanterias? Borrar(Estanterias entidad)
+        public Estanterias Borrar(int id)
         {
-            if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+            var entidad = this.conexion.Estanterias!.FirstOrDefault(estanteria => estanteria.Id == id);
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad == null)
+                throw new Exception("No existe esta estanteria");
 
             this.conexion.Estanterias!.Remove(entidad);
             this.conexion.SaveChanges();

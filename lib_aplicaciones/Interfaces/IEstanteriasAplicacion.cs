@@ -2,18 +2,18 @@
 
 namespace lib_aplicaciones.Interfaces
 {
-    internal interface IEstanteriasAplicacion
+    public interface IEstanteriasAplicacion
     {
-        public List<Estanterias> Listar();
+        public List<Estanterias> Listar(int pagina = 1, int tamañoPagina = 20);
 
-        public Estanterias? PorId(int Id);
+        public Estanterias? PorId(int id);
 
-        public Estanterias? PorNombre(string nombre);
+        public List<Estanterias> PorNombre(string nombre);
 
-        public Estanterias? Guardar(Estanterias? entidad);
+        public Estanterias Guardar(Estanterias? entidad);
 
-        public Estanterias? Modificar(Estanterias? entidad);
+        public Estanterias Modificar(Estanterias? entidad);
 
-        public Estanterias? Borrar(Estanterias entidad);
+        public Estanterias Borrar(int id);
     }
 }

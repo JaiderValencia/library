@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class PrestamosAplicacion: IPrestamosAplicacion
+    public class PrestamosAplicacion: IPrestamosAplicacion
     {
         private Conexion conexion = new Conexion();
 
@@ -16,13 +16,12 @@ namespace lib_aplicaciones.Implementaciones
                 .ToList();
         }
 
-        public Prestamos? Borrar(Prestamos entidad)
+        public Prestamos? Borrar(int id)
         {
-            if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+            var entidad = this.conexion.Prestamos!.FirstOrDefault(Prestamos => Prestamos.Id == id);
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad == null)
+                throw new Exception("No se guardó este nivel");
 
             this.conexion!.Prestamos!.Remove(entidad);
             this.conexion.SaveChanges();

@@ -5,17 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class Niveles_tiene_LibrosAplicacion: INiveles_tiene_LibrosAplicacion
+    public class Niveles_tiene_LibrosAplicacion: INiveles_tiene_LibrosAplicacion
     {
         private Conexion conexion = new Conexion();
 
-        public Niveles_tiene_Libros? Borrar(Niveles_tiene_Libros entidad)
+        public Niveles_tiene_Libros? Borrar(int id)
         {
-            if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+            var entidad = this.conexion.Niveles_tiene_Libros!.FirstOrDefault(Niveles_tiene_Libros => Niveles_tiene_Libros.Id == id);
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad == null)
+                throw new Exception("No se guardó");
 
             this.conexion!.Niveles_tiene_Libros!.Remove(entidad);
             this.conexion.SaveChanges();

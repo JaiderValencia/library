@@ -3,13 +3,13 @@ using lib_repositorios.Implementaciones;
 
 namespace lib_aplicaciones.Interfaces
 {
-    interface ITiposDocumentosAplicacion
+    public interface ITiposDocumentosAplicacion
     {       
         TiposDocumentos? PorId(int Id);
         List<TiposDocumentos>? PorNombre(string nombre);
         List<TiposDocumentos> Listar();
         TiposDocumentos? Guardar(TiposDocumentos? entidad);
         TiposDocumentos? Modificar(TiposDocumentos? entidad);
-        TiposDocumentos? Borrar(TiposDocumentos entidad);
+        TiposDocumentos? Borrar(int Id);
     }
 }

@@ -9,13 +9,13 @@ namespace asp_servicios.Controllers
     [Route("[controller]/[action]")]
     public class AutoresController : ControllerBase
     {
-        private IAutoresAplicacion? iAplicacion = null;
+        private IAutoresAplicacion? iAutoresAplicacion = null;
         private TokenController? tokenController = null;
 
         public AutoresController(IAutoresAplicacion? iAplicacion,
             TokenController tokenController)
         {
-            this.iAplicacion = iAplicacion;
+            this.iAutoresAplicacion = iAplicacion;
             this.tokenController = tokenController;
         }
 
@@ -40,7 +40,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                respuesta["Entidades"] = this.iAplicacion!.Listar();
+                respuesta["Entidades"] = this.iAutoresAplicacion!.Listar();
 
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
@@ -65,7 +65,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                respuesta["Entidad"] = this.iAplicacion!.PorId(Convert.ToInt32(datos["id"]));
+                respuesta["Entidad"] = this.iAutoresAplicacion!.PorId(Convert.ToInt32(datos["id"]));
 
                 respuesta["Respuesta"] = "OK";
 
@@ -94,7 +94,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
                
-                respuesta["Entidades"] = this.iAplicacion!.PorNombre(datos["nombre"].ToString());
+                respuesta["Entidades"] = this.iAutoresAplicacion!.PorNombre(datos["nombre"].ToString());
 
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
@@ -122,7 +122,7 @@ namespace asp_servicios.Controllers
 
                 var entidad = JsonConversor.ConvertirAObjeto<Autores>(JsonConversor.ConvertirAString(datos["Entidad"]));
 
-                entidad = this.iAplicacion!.Guardar(entidad);
+                entidad = this.iAutoresAplicacion!.Guardar(entidad);
 
                 respuesta["Entidad"] = entidad!;
                 respuesta["Respuesta"] = "OK";
@@ -151,7 +151,7 @@ namespace asp_servicios.Controllers
 
                 var entidad = JsonConversor.ConvertirAObjeto<Autores>(JsonConversor.ConvertirAString(datos["Entidad"]));
 
-                entidad = this.iAplicacion!.Modificar(entidad);
+                entidad = this.iAutoresAplicacion!.Modificar(entidad);
 
                 respuesta["Entidad"] = entidad!;
                 respuesta["Respuesta"] = "OK";
@@ -178,7 +178,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
                 
-                var entidad = this.iAplicacion!.Borrar(Convert.ToInt32(datos["id"]));
+                var entidad = this.iAutoresAplicacion!.Borrar(Convert.ToInt32(datos["id"]));
 
                 respuesta["Entidad"] = entidad!;
                 respuesta["Respuesta"] = "OK";

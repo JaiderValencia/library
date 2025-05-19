@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class NumerosDeSerieAplicacion: INumerosDeSerieAplicacion
+    public class NumerosDeSerieAplicacion: INumerosDeSerieAplicacion
     {
         private Conexion conexion = new Conexion();
 
@@ -16,13 +16,12 @@ namespace lib_aplicaciones.Implementaciones
                 .ToList();
         }
 
-        public NumerosDeSerie? Borrar(NumerosDeSerie entidad)
+        public NumerosDeSerie? Borrar(int id)
         {
-            if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+            var entidad = this.conexion.NumerosDeSerie!.FirstOrDefault(NumerosDeSerie => NumerosDeSerie.Id == id);
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad == null)
+                throw new Exception("No se guardó este nivel");
 
             this.conexion!.NumerosDeSerie!.Remove(entidad);
             this.conexion.SaveChanges();

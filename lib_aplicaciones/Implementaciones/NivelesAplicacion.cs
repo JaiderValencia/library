@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    class NivelesAplicacion: INivelesAplicacion
+    public class NivelesAplicacion: INivelesAplicacion
     {
         private Conexion conexion = new Conexion();
 
@@ -16,13 +16,12 @@ namespace lib_aplicaciones.Implementaciones
                 .ToList();
         }
 
-        public Niveles? Borrar(Niveles entidad)
+        public Niveles? Borrar(int id)
         {
-            if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+            var entidad = this.conexion.Niveles!.FirstOrDefault(Niveles => Niveles.Id == id);
 
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+            if (entidad == null)
+                throw new Exception("No se guardó este nivel");
 
             this.conexion!.Niveles!.Remove(entidad);
             this.conexion.SaveChanges();

@@ -30,5 +30,9 @@ namespace lib_repositorios.Implementaciones
         public DbSet<Niveles_tiene_Libros>? Niveles_tiene_Libros { get; set; }
         public DbSet<Prestamos>? Prestamos { get; set; }
         public DbSet<TiposDocumentos>? TiposDocumentos { get; set; }
+        public DbSet<Accesos>? Accesos { get; set; }
+        public DbSet<Administradores>? Administradores { get; set; }
+        public DbSet<Roles>? Roles { get; set; }
+        public DbSet<Roles_tiene_Accesos>? Roles_tiene_Accesos { get; set; }
     }
 }

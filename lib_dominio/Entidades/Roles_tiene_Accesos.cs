@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace lib_dominio.Entidades
 {
-    internal class Roles_tiene_Accesos
+    public class Roles_tiene_Accesos
     {
         [Key] public int Id { get; set; }
         public int Rol { get; set; }

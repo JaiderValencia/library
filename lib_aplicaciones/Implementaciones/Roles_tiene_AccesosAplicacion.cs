@@ -5,23 +5,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    public class Niveles_tiene_LibrosAplicacion: INiveles_tiene_LibrosAplicacion
+    public class Roles_tiene_AccesosAplicacion: IRoles_tiene_AccesosAplicacion
     {
         private Conexion conexion = new Conexion();
 
-        public Niveles_tiene_Libros? Borrar(int id)
+        public Roles_tiene_Accesos? Borrar(int id)
         {
-            var entidad = this.conexion.Niveles_tiene_Libros!.FirstOrDefault(Niveles_tiene_Libros => Niveles_tiene_Libros.Id == id);
+            var entidad = this.conexion.Roles_tiene_Accesos!.FirstOrDefault(Roles_tiene_Accesos => Roles_tiene_Accesos.Id == id);
 
             if (entidad == null)
                 throw new Exception("No se guardó");
 
-            this.conexion!.Niveles_tiene_Libros!.Remove(entidad);
+            this.conexion!.Roles_tiene_Accesos!.Remove(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public Niveles_tiene_Libros? Guardar(Niveles_tiene_Libros? entidad)
+        public Roles_tiene_Accesos? Guardar(Roles_tiene_Accesos? entidad)
         {            
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -29,25 +29,25 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad.Id != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            this.conexion!.Niveles_tiene_Libros!.Add(entidad);
+            this.conexion!.Roles_tiene_Accesos!.Add(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public List<Niveles_tiene_Libros> Listar()
+        public List<Roles_tiene_Accesos> Listar()
         {
-            return this.conexion!.Niveles_tiene_Libros!.Take(20).ToList();
+            return this.conexion!.Roles_tiene_Accesos!.Take(20).ToList();
         }
 
-        public Niveles_tiene_Libros? PorId(int Id)
+        public Roles_tiene_Accesos? PorId(int Id)
         {
-            return this.conexion!.Niveles_tiene_Libros!
-                .Include(Niveles_tiene_Libros => Niveles_tiene_Libros._Libro)
-                .Include(Niveles_tiene_Libros => Niveles_tiene_Libros._Nivel)
+            return this.conexion!.Roles_tiene_Accesos!
+                .Include(Roles_tiene_Accesos => Roles_tiene_Accesos._Acceso)
+                .Include(Roles_tiene_Accesos => Roles_tiene_Accesos._Rol)
                 .FirstOrDefault(x => x.Id==Id);
         }
 
-        public Niveles_tiene_Libros? Modificar(Niveles_tiene_Libros? entidad)
+        public Roles_tiene_Accesos? Modificar(Roles_tiene_Accesos? entidad)
 
 
         {
@@ -57,9 +57,9 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            entidad.Libro = 2;
+            entidad.Acceso = 2;
 
-            var entry = this.conexion!.Entry<Niveles_tiene_Libros>(entidad);
+            var entry = this.conexion!.Entry<Roles_tiene_Accesos>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
             return entidad;

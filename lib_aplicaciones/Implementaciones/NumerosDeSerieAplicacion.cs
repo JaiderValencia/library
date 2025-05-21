@@ -12,6 +12,7 @@ namespace lib_aplicaciones.Implementaciones
         public List<NumerosDeSerie>? PorNumeroSerie(string NumeroSerie)
         {
             return this.conexion!.NumerosDeSerie!
+                .Include(NumeroSerie => NumeroSerie._Libro)
                 .Where(x => x.NumeroSerie!.Contains(NumeroSerie))
                 .ToList();
         }

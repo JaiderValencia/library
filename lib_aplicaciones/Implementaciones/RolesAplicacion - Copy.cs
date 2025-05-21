@@ -5,56 +5,53 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    public class NivelesAplicacion: INivelesAplicacion
+    public class RolesAplicacion : IRolesAplicacion
     {
         private Conexion conexion = new Conexion();
 
-        public List<Niveles>? PorNombre(string nombre)
+        public List<Roles>? PorNombre(string nombre)
         {
-            return this.conexion!.Niveles!
-                .Include(Niveles => Niveles._Estanteria)
+            return this.conexion!.Roles!
                 .Where(x => x.Nombre!.Contains(nombre))
                 .ToList();
         }
 
-        public Niveles? Borrar(int id)
+        public Roles? Borrar(int id)
         {
-            var entidad = this.conexion.Niveles!.FirstOrDefault(Niveles => Niveles.Id == id);
+            var entidad = this.conexion.Roles!.FirstOrDefault(Autor => Autor.Id == id);
 
             if (entidad == null)
-                throw new Exception("No se guardó este nivel");
+                throw new Exception("No se guardó ese autor");
 
-            this.conexion!.Niveles!.Remove(entidad);
+            this.conexion!.Roles!.Remove(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public Niveles? Guardar(Niveles? entidad)
-        {            
+        public Roles? Guardar(Roles? entidad)
+        {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
             if (entidad.Id != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            this.conexion!.Niveles!.Add(entidad);
+            this.conexion!.Roles!.Add(entidad);
             this.conexion.SaveChanges();
             return entidad;
         }
 
-        public List<Niveles> Listar()
+        public List<Roles> Listar()
         {
-            return this.conexion!.Niveles!.Take(20).ToList();
+            return this.conexion!.Roles!.Take(20).ToList();
         }
 
-        public Niveles? PorId(int Id)
+        public Roles? PorId(int Id)
         {
-            return this.conexion!.Niveles!.FirstOrDefault(x => x.Id==Id);
+            return this.conexion!.Roles!.FirstOrDefault(x => x.Id == Id);
         }
 
-        public Niveles? Modificar(Niveles? entidad)
-
-
+        public Roles? Modificar(Roles? entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
@@ -62,9 +59,9 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            entidad.Nombre = "Nombre cambiado";
+            entidad.Apellido = "Apellido cambiado";
 
-            var entry = this.conexion!.Entry<Niveles>(entidad);
+            var entry = this.conexion!.Entry<Roles>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
             return entidad;

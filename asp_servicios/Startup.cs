@@ -38,6 +38,11 @@ namespace asp_servicios
             services.AddScoped<INumerosDeSerieAplicacion, NumerosDeSerieAplicacion>();
             services.AddScoped<IPrestamosAplicacion, PrestamosAplicacion>();
             services.AddScoped<ITiposDocumentosAplicacion, TiposDocumentosAplicacion>();
+            services.AddScoped<IAccesosAplicacion, AccesosAplicacion>();
+            services.AddScoped<IAdministradoresAplicacion, AdministradoresAplicacion>();
+            services.AddScoped<IRolesAplicacion, RolesAplicacion>();
+            services.AddScoped<IRoles_tiene_AccesosAplicacion, Roles_tiene_AccesosAplicacion>();
+
 
             // Controladores
             services.AddScoped<TokenController, TokenController>();

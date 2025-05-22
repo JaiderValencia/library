@@ -60,7 +60,7 @@ namespace lib_aplicaciones.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            entidad.Apellido = "Apellido cambiado";
+            entidad.Nombre = "Nombre cambiado";
 
             var entry = this.conexion!.Entry<Administradores>(entidad);
             entry.State = EntityState.Modified;

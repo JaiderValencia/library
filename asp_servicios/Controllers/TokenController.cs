@@ -5,11 +5,20 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using lib_dominio.Nucleo;
+using lib_aplicaciones.Interfaces;
+using Bcrypt = BCrypt.Net.BCrypt;
 
 namespace asp_servicios.Controllers
 {
     public class TokenController : ControllerBase
     {
+        private readonly IAdministradoresAplicacion administradoresAplicacion;
+
+        public TokenController(IAdministradoresAplicacion administradoresAplicacion)
+        {
+            this.administradoresAplicacion = administradoresAplicacion;
+        }
+
         private Dictionary<string, object> ObtenerDatos()
         {
             var respuesta = new Dictionary<string, object>();
@@ -36,24 +45,36 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                if (!datos.ContainsKey("Usuario") ||
-                    datos["Usuario"].ToString()! != DatosGenerales.usuario_datos)
+
+                string usuario = datos["Usuario"].ToString()!;
+                string password = datos["Password"].ToString()!;
+
+                if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password))
                 {
-                    respuesta["Error"] = "lbNoAutenticacion";
+                    respuesta["Error"] = "lb Falta usuario o contraseña";
+                    return JsonConversor.ConvertirAString(respuesta);
+                }
+                                
+                var administrador = administradoresAplicacion.ObtenerUnoNombre(usuario);
+                
+                if (!Bcrypt.Verify(password, administrador.Password))
+                {
+                    respuesta["Error"] = "lb Usuario o contraseña incorrectos";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, datos["Usuario"].ToString()!)
-                }),
+                    Subject = new ClaimsIdentity(new Claim[] { new Claim("Id", administrador.Id.ToString()) }),
+
                     Expires = DateTime.UtcNow.AddHours(1),
+
                     SigningCredentials = new SigningCredentials(
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(DatosGenerales.clave)),
                         SecurityAlgorithms.HmacSha256Signature)
                 };
+
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
                 respuesta["Token"] = tokenHandler.WriteToken(token);
@@ -71,12 +92,17 @@ namespace asp_servicios.Controllers
             try
             {
                 var authorizationHeader = data["Bearer"].ToString();
+
                 authorizationHeader = authorizationHeader!.Replace("Bearer ", "");
+
                 var tokenHandler = new JwtSecurityTokenHandler();
+
                 SecurityToken token = tokenHandler.ReadToken(authorizationHeader);
-                if (DateTime.UtcNow > token.ValidTo)
-                    return false;
-                return true;
+
+                bool validarTiempo = DateTime.UtcNow > token.ValidTo;
+                bool validarId = this.administradoresAplicacion.PorId(Convert.ToInt32(token.Id)) != null;
+
+                return validarTiempo && validarId;
             }
             catch
             {

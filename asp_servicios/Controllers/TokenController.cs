@@ -46,27 +46,30 @@ namespace asp_servicios.Controllers
             {
                 var datos = ObtenerDatos();
 
-                string usuario = datos["Usuario"].ToString()!;
+                string nombre = datos["Nombre"].ToString()!;
                 string password = datos["Password"].ToString()!;
 
-                if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(password))
+                if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(password))
                 {
                     respuesta["Error"] = "lb Falta usuario o contraseña";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-                                
-                var administrador = administradoresAplicacion.ObtenerUnoNombre(usuario);
-                
+
+                var administrador = administradoresAplicacion.ObtenerUnoNombre(nombre);
+
                 if (!Bcrypt.Verify(password, administrador.Password))
                 {
-                    respuesta["Error"] = "lb Usuario o contraseña incorrectos";
+                    respuesta["Error"] = "lb Nombre o contraseña incorrectos";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(new Claim[] { new Claim("Id", administrador.Id.ToString()) }),
+                    Claims = new List<Claim>
+        {
+            new Claim("Rol", "Admin"),            
+        },
 
                     Expires = DateTime.UtcNow.AddHours(1),
 
@@ -99,8 +102,9 @@ namespace asp_servicios.Controllers
 
                 SecurityToken token = tokenHandler.ReadToken(authorizationHeader);
 
-                bool validarTiempo = DateTime.UtcNow > token.ValidTo;
-                bool validarId = this.administradoresAplicacion.PorId(Convert.ToInt32(token.Id)) != null;
+                bool validarTiempo = DateTime.UtcNow < token.ValidTo;
+
+                bool validarId = this.administradoresAplicacion.PorId(Convert.ToInt32(Id)) != null;
 
                 return validarTiempo && validarId;
             }

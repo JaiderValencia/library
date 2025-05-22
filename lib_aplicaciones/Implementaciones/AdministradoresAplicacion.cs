@@ -9,9 +9,9 @@ namespace lib_aplicaciones.Implementaciones
     {
         private Conexion conexion = new Conexion();
 
-        public Administradores ObtenerUnoNombre(string usuario)
+        public Administradores ObtenerUnoNombre(string nombre)
         {
-            var entidad = this.conexion.Administradores!.FirstOrDefault(Administrador => Administrador.Nombre == usuario);
+            var entidad = this.conexion.Administradores!.FirstOrDefault(Administrador => Administrador.Nombre!.Equals(nombre));
 
             if (entidad == null)
                 throw new Exception("Usuario o contraseña incorrectos");

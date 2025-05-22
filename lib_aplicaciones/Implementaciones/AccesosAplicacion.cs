@@ -21,7 +21,7 @@ namespace lib_aplicaciones.Implementaciones
             var entidad = this.conexion.Accesos!.FirstOrDefault(Autor => Autor.Id == id);
 
             if (entidad == null)
-                throw new Exception("No se guardó ese autor");
+                throw new Exception("No se guardó ese acceso");
 
             this.conexion!.Accesos!.Remove(entidad);
             this.conexion.SaveChanges();
@@ -57,9 +57,7 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
 
             if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
-
-            entidad.Nombre = "Nombre cambiado";
+                throw new Exception("lbNoSeGuardo");            
 
             var entry = this.conexion!.Entry<Accesos>(entidad);
             entry.State = EntityState.Modified;

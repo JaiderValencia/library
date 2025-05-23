@@ -1,3 +1,6 @@
+# Archivos de conexion
+secretos.json
+
 # Archivos de compilación
 bin/
 obj/

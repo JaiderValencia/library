@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    public class NivelesAplicacion: INivelesAplicacion
+    public class NivelesAplicacion : INivelesAplicacion
     {
         private Conexion conexion = new Conexion();
 
@@ -30,7 +30,7 @@ namespace lib_aplicaciones.Implementaciones
         }
 
         public Niveles? Guardar(Niveles? entidad)
-        {            
+        {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
@@ -49,20 +49,16 @@ namespace lib_aplicaciones.Implementaciones
 
         public Niveles? PorId(int Id)
         {
-            return this.conexion!.Niveles!.FirstOrDefault(x => x.Id==Id);
+            return this.conexion!.Niveles!.FirstOrDefault(x => x.Id == Id);
         }
 
         public Niveles? Modificar(Niveles? entidad)
-
-
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
-
-            entidad.Nombre = "Nombre cambiado";
 
             var entry = this.conexion!.Entry<Niveles>(entidad);
             entry.State = EntityState.Modified;

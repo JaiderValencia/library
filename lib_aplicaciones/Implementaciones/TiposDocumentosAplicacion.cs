@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    public class TiposDocumentosAplicacion: ITiposDocumentosAplicacion
+    public class TiposDocumentosAplicacion : ITiposDocumentosAplicacion
     {
         private Conexion conexion = new Conexion();
 
@@ -29,7 +29,7 @@ namespace lib_aplicaciones.Implementaciones
         }
 
         public TiposDocumentos? Guardar(TiposDocumentos? entidad)
-        {            
+        {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
@@ -48,20 +48,16 @@ namespace lib_aplicaciones.Implementaciones
 
         public TiposDocumentos? PorId(int Id)
         {
-            return this.conexion!.TiposDocumentos!.FirstOrDefault(x => x.Id==Id);
+            return this.conexion!.TiposDocumentos!.FirstOrDefault(x => x.Id == Id);
         }
 
         public TiposDocumentos? Modificar(TiposDocumentos? entidad)
-
-
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
-
-            entidad.Nombre = "Nombre cambiado";
 
             var entry = this.conexion!.Entry<TiposDocumentos>(entidad);
             entry.State = EntityState.Modified;

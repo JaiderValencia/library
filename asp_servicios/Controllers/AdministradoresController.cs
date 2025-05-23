@@ -2,6 +2,7 @@
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
 using Microsoft.AspNetCore.Mvc;
+using Bcrypt = BCrypt.Net.BCrypt;
 
 namespace asp_servicios.Controllers
 {
@@ -122,6 +123,8 @@ namespace asp_servicios.Controllers
 
                 var entidad = JsonConversor.ConvertirAObjeto<Administradores>(JsonConversor.ConvertirAString(datos["Entidad"]));
 
+                entidad.Password = Bcrypt.HashPassword(entidad.Password);
+                
                 entidad = this.iAdministradoresAplicacion!.Guardar(entidad);
 
                 respuesta["Entidad"] = entidad!;

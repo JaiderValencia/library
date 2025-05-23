@@ -9,6 +9,16 @@ namespace lib_aplicaciones.Implementaciones
     {
         private Conexion conexion = new Conexion();
 
+        public Administradores ObtenerUnoNombre(string nombre)
+        {
+            var entidad = this.conexion.Administradores!.FirstOrDefault(Administrador => Administrador.Nombre!.Equals(nombre));
+
+            if (entidad == null)
+                throw new Exception("Usuario o contraseña incorrectos");
+
+            return entidad;
+        }
+
         public List<Administradores>? PorNombre(string nombre)
         {
             return this.conexion!.Administradores!
@@ -49,7 +59,7 @@ namespace lib_aplicaciones.Implementaciones
 
         public Administradores? PorId(int Id)
         {
-            return this.conexion!.Administradores!.FirstOrDefault(x => x.Id == Id);
+            return this.conexion!.Administradores!.FirstOrDefault(Administrador => Administrador.Id == Id);
         }
 
         public Administradores? Modificar(Administradores? entidad)
@@ -59,8 +69,6 @@ namespace lib_aplicaciones.Implementaciones
 
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
-
-            entidad.Nombre = "Nombre cambiado";
 
             var entry = this.conexion!.Entry<Administradores>(entidad);
             entry.State = EntityState.Modified;

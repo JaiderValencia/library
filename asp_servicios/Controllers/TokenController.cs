@@ -8,6 +8,8 @@ using lib_dominio.Nucleo;
 using lib_aplicaciones.Interfaces;
 using Bcrypt = BCrypt.Net.BCrypt;
 
+
+
 namespace asp_servicios.Controllers
 {
     public class TokenController : ControllerBase
@@ -66,16 +68,13 @@ namespace asp_servicios.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Claims = new List<Claim>
-        {
-            new Claim("Rol", "Admin"),            
-        },
+                    Subject = new ClaimsIdentity(new Claim[] {
+                        new Claim("administrador_id", administrador.Id.ToString()!)}),
 
                     Expires = DateTime.UtcNow.AddHours(1),
 
                     SigningCredentials = new SigningCredentials(
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(DatosGenerales.clave)),
-                        SecurityAlgorithms.HmacSha256Signature)
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(DatosGenerales.clave)), SecurityAlgorithms.HmacSha256Signature)
                 };
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -100,12 +99,16 @@ namespace asp_servicios.Controllers
 
                 var tokenHandler = new JwtSecurityTokenHandler();
 
-                SecurityToken token = tokenHandler.ReadToken(authorizationHeader);
+                var token = tokenHandler.ReadToken(authorizationHeader) as JwtSecurityToken;
+
+                // Extraer el ID del administrador desde el claim
+                var idClaim = token!.Claims.FirstOrDefault(claim => claim.Type == "administrador_id");
+
+                var administradorId = int.Parse(idClaim!.Value);
 
                 bool validarTiempo = DateTime.UtcNow < token.ValidTo;
 
-                bool validarId = this.administradoresAplicacion.PorId(Convert.ToInt32(Id)) != null;
-
+                bool validarId = this.administradoresAplicacion.PorId(administradorId) != null;
                 return validarTiempo && validarId;
             }
             catch

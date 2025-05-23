@@ -11,14 +11,14 @@ CREATE TABLE [Roles](
 
 CREATE TABLE [Administradores](
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
-	[Nombre] TEXT NOT NULL,
-	[Password] TEXT NOT NULL,
+	[Nombre] NVARCHAR(100) NOT NULL,
+	[Password] NVARCHAR(70) NOT NULL,
 	[Role] INT NOT NULL REFERENCES Roles(Id)
 );
 
 CREATE TABLE [Accesos](
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
-	[Nombre] TEXT NOT NULL,
+	[Nombre] NVARCHAR(100) NOT NULL,
 );
 
 CREATE TABLE Roles_tiene_Accesos(
@@ -29,8 +29,8 @@ CREATE TABLE Roles_tiene_Accesos(
 
 CREATE TABLE [Auditorias](
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
-	[Administrador] TEXT NOT NULL,
-	[Accion] TEXT NOT NULL,
+	[Administrador] NVARCHAR(100) NOT NULL,
+	[Accion] NVARCHAR(300) NOT NULL,
 	[Fecha] DATETIME DEFAULT GETDATE()
 );
 

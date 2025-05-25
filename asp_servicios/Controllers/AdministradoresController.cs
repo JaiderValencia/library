@@ -154,6 +154,8 @@ namespace asp_servicios.Controllers
 
                 var entidad = JsonConversor.ConvertirAObjeto<Administradores>(JsonConversor.ConvertirAString(datos["Entidad"]));
 
+                entidad.Password = Bcrypt.HashPassword(entidad.Password);
+
                 entidad = this.iAdministradoresAplicacion!.Modificar(entidad);
 
                 respuesta["Entidad"] = entidad!;

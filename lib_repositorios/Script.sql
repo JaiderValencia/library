@@ -127,9 +127,9 @@ VALUES ('6',4)
 SELECT * FROM [Niveles]
 
 INSERT INTO [Categorias] ([Nombre],[Descripcion])
-VALUES ('Infantil','Libros para ni�os entre 5 y 12 a�os')
+VALUES ('Infantil','Libros para niños entre 5 y 12 años')
 INSERT INTO [Categorias] ([Nombre],[Descripcion])
-VALUES ('Educaci�n','Libros para bachillerato y universidad')
+VALUES ('Educación','Libros para bachillerato y universidad')
 INSERT INTO [Categorias] ([Nombre],[Descripcion])
 VALUES ('Fantasia','Libros para todas las edades')
 INSERT INTO [Categorias] ([Nombre],[Descripcion])
@@ -137,7 +137,7 @@ VALUES ('Novela','Libros de historias dramaticas')
 SELECT * FROM [Categorias]
 
 INSERT INTO [Autores] ([Nombre],[Apellido],[FechaNacimiento])
-VALUES ('Antonie','de Saint-Exup�ry','1900/6/29')
+VALUES ('Antonie','de Saint-Exupéry','1900/6/29')
 INSERT INTO [Autores] ([Nombre],[Apellido],[FechaNacimiento])
 VALUES ('Aurelio','Baldor','1906/10/22')
 INSERT INTO [Autores] ([Nombre],[Apellido],[FechaNacimiento])
@@ -153,7 +153,7 @@ VALUES ('Algebra','1941/6/19',2,2)
 INSERT INTO [Libros] ([Nombre],[Fecha],[Categoria],[Autor])
 VALUES ('Harry Potter','1997/6/19',3,3)
 INSERT INTO [Libros] ([Nombre],[Fecha],[Categoria],[Autor])
-VALUES ('El se�or de los anillos','1954/6/29',3,4)
+VALUES ('El señor de los anillos','1954/6/29',3,4)
 SELECT * FROM [Libros]
 
 INSERT INTO [NumerosDeSerie] ([NumeroSerie],[Libro])
@@ -177,13 +177,13 @@ VALUES (4,4)
 SELECT * FROM [Niveles_tiene_Libros]
 
 INSERT INTO [TiposDocumentos] ([Nombre],[NombreCorto])
-VALUES ('C�dula','CC')
+VALUES ('cédula','CC')
 INSERT INTO [TiposDocumentos] ([Nombre],[NombreCorto])
 VALUES ('Tarjeta de indentidad','T.I')
 INSERT INTO [TiposDocumentos] ([Nombre],[NombreCorto])
 VALUES ('Pasaporte','P.P')
 INSERT INTO [TiposDocumentos] ([Nombre],[NombreCorto])
-VALUES ('C�dula de extranjer�a','C.E')
+VALUES ('cédula de extranjería','C.E')
 SELECT * FROM [TiposDocumentos]
 
 INSERT INTO [Clientes] ([Nombre],[Apellido],[Documento],[Direccion],[Correo],[Telefono],[TipoDocumento])
@@ -206,3 +206,40 @@ INSERT INTO [Prestamos] ([FechaInicio],[FechaFinal],[FechaEntregado],[Cliente],[
 VALUES ('2024/04/08 7:20:20','2024/04/08 7:20:20',NULL,4,4)
 SELECT * FROM [Prestamos]
 
+INSERT INTO [Roles] ([Nombre]) VALUES ('Jefe');
+
+INSERT INTO [Accesos] ([Nombre]) VALUES 
+('TiposDocumentos'),
+('Clientes'),
+('Estanterias'),
+('Niveles'),
+('Categorias'),
+('Autores'),
+('Libros'),
+('Numeros de serie'),
+('Prestamos'),
+('Roles'),
+('Accesos'),
+('Administradores'),
+('Auditorias'),
+('Niveles_tiene_Libros'),
+('Roles_tiene_Accesos');
+
+INSERT INTO [Roles_tiene_Accesos] ([Role], [Acceso]) VALUES 
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(1, 6),
+(1, 7),
+(1, 8),
+(1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 13),
+(1, 14),
+(1, 15);
+
+INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('admin', '$2a$11$ER55nUgrwT5IYUQLYEJRYO69qLYJzaE4uZJNLD4NR2ojMVy2OfG7G', 1);

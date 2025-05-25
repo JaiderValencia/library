@@ -59,7 +59,7 @@ namespace asp_servicios.Controllers
 
                 var administrador = administradoresAplicacion.ObtenerUnoNombre(nombre);
 
-                if (!Bcrypt.Verify(password, administrador.Password))
+                if (administrador == null || !Bcrypt.Verify(password, administrador!.Password))
                 {
                     respuesta["Error"] = "lb Nombre o contraseña incorrectos";
                     return JsonConversor.ConvertirAString(respuesta);

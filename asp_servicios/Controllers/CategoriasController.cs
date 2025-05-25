@@ -95,7 +95,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                respuesta["Entidad"] = this.CategoriasAplicacion!.PorNombre(datos["nombre"].ToString());
+                respuesta["Entidades"] = this.CategoriasAplicacion!.PorNombre(datos["nombre"].ToString());
                 
                 respuesta["Respuesta"] = "OK";
 

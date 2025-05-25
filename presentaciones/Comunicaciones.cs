@@ -1,5 +1,4 @@
 ﻿using lib_dominio.Nucleo;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lib_presentaciones
 {
@@ -19,12 +18,12 @@ namespace lib_presentaciones
             Servicio = servicio;
         }
 
-        public Dictionary<string, object> ConstruirUrl(Dictionary<string, object>data, string Metodo)
+        public Dictionary<string, object> ConstruirUrl(Dictionary<string, object> data, string Metodo)
         {
             data["Url"] = Protocolo + Host + "/" + Servicio + Metodo;
 
 
-            data["UrlToken"] = Protocolo + Host + "/" + Servicio + "Token/Autenticar"; 
+            data["UrlToken"] = Protocolo + Host + "/" + Servicio + "Token/Autenticar";
             return data;
         }
 
@@ -75,8 +74,6 @@ namespace lib_presentaciones
         }
 
         private async Task<Dictionary<string, object>> Authenticate(Dictionary<string, object> datos)
-
-
         {
             var respuesta = new Dictionary<string, object>();
             try

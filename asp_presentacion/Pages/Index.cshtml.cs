@@ -69,12 +69,12 @@ namespace asp_presentacion.Pages
                     return;
                 }
 
-                ViewData["Logged"] = true;
-
                 var token = this.IPresentacion!.ObtenerToken(Nombre!, Password!);
                 token.Wait();
                 
-                HttpContext.Session.SetString("Token", token.ToString()!);
+                HttpContext.Session.SetString("Token", token.Result.ToString()!);
+                ViewData["Logged"] = true;
+                
                 EstaLogueado = true;
                 OnPostBtClean();
             }

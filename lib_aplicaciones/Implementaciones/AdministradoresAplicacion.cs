@@ -106,6 +106,11 @@ namespace lib_aplicaciones.Implementaciones
 
         public Administradores? Modificar(Administradores? entidad)
         {
+            bool existe = this.conexion!.Administradores!.Any(Administrador => Administrador.Nombre!.Equals(entidad!.Nombre) && Administrador.Id != entidad.Id);
+            
+            if (existe)
+                throw new Exception("Ya existe un administrador con ese nombre");
+
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 

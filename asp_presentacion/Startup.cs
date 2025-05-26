@@ -14,6 +14,7 @@ namespace asp_presentacion
         public void ConfigureServices(WebApplicationBuilder builder, IServiceCollection services)
         {
             // Presentaciones
+            services.AddScoped<IAdministradoresPresentacion, AdministradoresPresentacion>();
             services.AddScoped<IAutoresPresentacion, AutoresPresentacion>();
             services.AddScoped<ICategoriasPresentacion, CategoriasPresentacion>();
             services.AddScoped<IClientesPresentacion, ClientesPresentacion>();

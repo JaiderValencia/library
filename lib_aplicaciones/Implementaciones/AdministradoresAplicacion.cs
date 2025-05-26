@@ -9,30 +9,42 @@ namespace lib_aplicaciones.Implementaciones
     {
         private Conexion conexion = new Conexion();
 
-        public Administradores ObtenerUnoNombre(string nombre)
+        public Administradores? ObtenerUnoNombre(string nombre)
         {
             var entidad = this.conexion.Administradores!.FirstOrDefault(Administrador => Administrador.Nombre!.Equals(nombre));
-
-            if (entidad == null)
-                throw new Exception("Usuario o contraseña incorrectos");
-
+            
             return entidad;
         }
 
         public List<Administradores>? PorNombre(string nombre)
         {
             return this.conexion!.Administradores!
-                .Include(Administradores => Administradores._Role)
+                .Select(Administradores => new Administradores
+                {
+                    Id = Administradores.Id,
+                    Nombre = Administradores.Nombre,
+                    Role = Administradores.Role,
+                    _Role = new Roles
+                    {
+                        Id = Administradores._Role!.Id,
+                        Nombre = Administradores._Role.Nombre,
+                    }
+                })
                 .Where(x => x.Nombre!.Contains(nombre))
                 .ToList();
         }
 
         public Administradores? Borrar(int id)
         {
-            var entidad = this.conexion.Administradores!.Include(Administradores => Administradores._Role).FirstOrDefault(Autor => Autor.Id == id);
+            var entidad = this.conexion.Administradores!.Select(Admin => new Administradores
+            {
+                Id = Admin.Id,
+                Nombre = Admin.Nombre,
+                Role = Admin.Role,                
+            }).FirstOrDefault(Autor => Autor.Id == id);
 
             if (entidad == null)
-                throw new Exception("No se guardó ese autor");
+                throw new Exception("No se guardó ese administrador");
 
             this.conexion!.Administradores!.Remove(entidad);
             this.conexion.SaveChanges();
@@ -41,6 +53,11 @@ namespace lib_aplicaciones.Implementaciones
 
         public Administradores? Guardar(Administradores? entidad)
         {
+            bool existe = this.conexion!.Administradores!.Any(Administrador => Administrador.Nombre!.Equals(entidad!.Nombre));
+
+            if (existe)
+                throw new Exception("Ya existe un administrador con ese nombre");
+
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
@@ -49,17 +66,35 @@ namespace lib_aplicaciones.Implementaciones
 
             this.conexion!.Administradores!.Add(entidad);
             this.conexion.SaveChanges();
+
+            entidad.Password = null;
+
             return entidad;
         }
 
         public List<Administradores> Listar()
         {
-            return this.conexion!.Administradores!.Take(20).ToList();
+            return this.conexion!.Administradores!.Select(admin => new Administradores
+            {
+                Id = admin.Id,
+                Nombre = admin.Nombre,
+                Role = admin.Role,
+            }).ToList();
         }
 
         public Administradores? PorId(int Id)
         {
-            return this.conexion!.Administradores!.FirstOrDefault(Administrador => Administrador.Id == Id);
+            return this.conexion!.Administradores!.Select(admin => new Administradores
+            {
+                Id = admin.Id,
+                Nombre = admin.Nombre,
+                Role = admin.Role,
+                _Role = new Roles
+                {
+                    Id = admin._Role!.Id,
+                    Nombre = admin._Role.Nombre,                    
+                }
+            }).FirstOrDefault(Administrador => Administrador.Id == Id);
         }
 
         public Administradores? Modificar(Administradores? entidad)

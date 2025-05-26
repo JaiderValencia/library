@@ -1,0 +1,49 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+@if (Model.MostrarAlerta)
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.MensajeAlerta
+    </div>
+}
+
+@if (!Model.EstaLogueado)
+{
+    <div class="container" align="left" style="width:100%">
+        <h3>
+            Login
+        </h3>
+        <form method="POST">
+            <div style="width:60%">
+                <div class="form-group">
+                    <label class="control-label">
+                        Usuario:
+                    </label>
+                    <input onchange="keyUp(this)" asp-for="@Model.Nombre" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        Contrasena:
+                    </label>
+                    <input type="password" onchange="keyUp(this)" asp-for="@Model.Password" class="form-control" />
+                </div>
+                <div class="form-group mt-2">
+                    <input type="reset" value="Limpiar" asp-page-handler="BtClean" class="btn btn-secondary" />
+                    <input type="submit" value="Entrar" asp-page-handler="BtEnter" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">
+            Bienvenido
+        </h1>
+    </div>
+}

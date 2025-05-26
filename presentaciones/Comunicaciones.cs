@@ -1,5 +1,4 @@
 ﻿using lib_dominio.Nucleo;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lib_presentaciones
 {
@@ -10,21 +9,19 @@ namespace lib_presentaciones
             Servicio = string.Empty,
             token = null;
 
-        public Comunicaciones(string servicio = "asp_servicios/",
+        public Comunicaciones(string servicio = "",
             string protocolo = "http://",
-            string host = "localhost")
+            string host = "localhost:5113")
         {
             Protocolo = protocolo;
             Host = host;
             Servicio = servicio;
         }
 
-        public Dictionary<string, object> ConstruirUrl(Dictionary<string, object>data, string Metodo)
+        public Dictionary<string, object> ConstruirUrl(Dictionary<string, object> data, string Metodo)
         {
             data["Url"] = Protocolo + Host + "/" + Servicio + Metodo;
-
-
-            data["UrlToken"] = Protocolo + Host + "/" + Servicio + "Token/Autenticar"; 
+            
             return data;
         }
 
@@ -33,15 +30,15 @@ namespace lib_presentaciones
             var respuesta = new Dictionary<string, object>();
             try
             {
-                respuesta = await Authenticate(datos);
-                if (respuesta == null || respuesta.ContainsKey("Error"))
-                    return respuesta!;
-                respuesta.Clear();
-
                 var url = datos["Url"].ToString();
-                datos.Remove("Url");
-                datos.Remove("UrlToken");
-                datos["Bearer"] = token!;
+                datos.Remove("Url");                
+
+                if (string.IsNullOrEmpty(datos["Bearer"].ToString()))
+                {
+                    respuesta.Add("Error", "Autenticación requerida");
+                    return respuesta;
+                }
+
                 var stringData = JsonConversor.ConvertirAString(datos);
 
                 var httpClient = new HttpClient();
@@ -74,16 +71,18 @@ namespace lib_presentaciones
             }
         }
 
-        private async Task<Dictionary<string, object>> Authenticate(Dictionary<string, object> datos)
-
-
+        public async Task<Dictionary<string, object>> Autenticar(string nombre, string password)
         {
             var respuesta = new Dictionary<string, object>();
             try
             {
-                var url = datos["UrlToken"].ToString();
-                var temp = new Dictionary<string, object>();
-                temp["Usuario"] = DatosGenerales.usuario_datos;
+                var url = Protocolo + Host + "/" + Servicio + "Token/Autenticar";
+                var temp = new Dictionary<string, object>()
+                {
+                    { "Nombre", nombre },
+                    { "Password", password }
+                };
+
                 var stringData = JsonConversor.ConvertirAString(temp);
 
                 var httpClient = new HttpClient();

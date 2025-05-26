@@ -152,9 +152,12 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var entidad = JsonConversor.ConvertirAObjeto<Administradores>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var entidad = JsonConversor.ConvertirAObjeto<Administradores>(datos["Entidad"].ToString()!);
 
-                entidad.Password = Bcrypt.HashPassword(entidad.Password);
+                if (string.IsNullOrEmpty(entidad.Password))
+                {                    
+                    entidad.Password = this.iAdministradoresAplicacion!.ObtenerUnoNombre(entidad.Nombre!)!.Password;
+                }                                
 
                 entidad = this.iAdministradoresAplicacion!.Modificar(entidad);
 

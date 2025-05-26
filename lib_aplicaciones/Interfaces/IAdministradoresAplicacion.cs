@@ -5,6 +5,7 @@ namespace lib_aplicaciones.Interfaces
 {
     public interface IAdministradoresAplicacion
     {
+        public string ObtenerPassword(int id);
         Administradores? ObtenerUnoNombre(string nobmre);
         Administradores? PorId(int Id);
         List<Administradores>? PorNombre(string nombre);

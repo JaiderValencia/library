@@ -97,6 +97,13 @@ namespace lib_aplicaciones.Implementaciones
             }).FirstOrDefault(Administrador => Administrador.Id == Id);
         }
 
+        public string ObtenerPassword(int id)
+        {
+            var entidad = this.conexion.Administradores!.FirstOrDefault(admin => admin.Id == id) ?? throw new Exception("No se encontró el administrador");
+
+            return entidad.Password!;
+        }
+
         public Administradores? Modificar(Administradores? entidad)
         {
             if (entidad == null)
@@ -104,7 +111,7 @@ namespace lib_aplicaciones.Implementaciones
 
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
-
+        
             var entry = this.conexion!.Entry<Administradores>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();

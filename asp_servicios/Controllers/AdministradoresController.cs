@@ -55,7 +55,8 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
-        public string PorId() { 
+        public string PorId()
+        {
             var respuesta = new Dictionary<string, object>();
             try
             {
@@ -94,7 +95,7 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-               
+
                 respuesta["Entidades"] = this.iAdministradoresAplicacion!.PorNombre(datos["nombre"].ToString());
 
                 respuesta["Respuesta"] = "OK";
@@ -124,7 +125,7 @@ namespace asp_servicios.Controllers
                 var entidad = JsonConversor.ConvertirAObjeto<Administradores>(JsonConversor.ConvertirAString(datos["Entidad"]));
 
                 entidad.Password = Bcrypt.HashPassword(entidad.Password);
-                
+
                 entidad = this.iAdministradoresAplicacion!.Guardar(entidad);
 
                 respuesta["Entidad"] = entidad!;
@@ -154,10 +155,14 @@ namespace asp_servicios.Controllers
 
                 var entidad = JsonConversor.ConvertirAObjeto<Administradores>(datos["Entidad"].ToString()!);
 
-                if (string.IsNullOrEmpty(entidad.Password))
-                {                    
-                    entidad.Password = this.iAdministradoresAplicacion!.ObtenerUnoNombre(entidad.Nombre!)!.Password;
-                }                                
+                if(string.IsNullOrEmpty(entidad.Password))
+                {
+                    entidad.Password = this.iAdministradoresAplicacion!.ObtenerPassword(entidad.Id);
+                }
+                else
+                {
+                    entidad.Password = Bcrypt.HashPassword(entidad.Password);
+                }
 
                 entidad = this.iAdministradoresAplicacion!.Modificar(entidad);
 
@@ -185,7 +190,7 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-                
+
                 var entidad = this.iAdministradoresAplicacion!.Borrar(Convert.ToInt32(datos["id"]));
 
                 respuesta["Entidad"] = entidad!;

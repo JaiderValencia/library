@@ -7,10 +7,19 @@ namespace lib_presentaciones.Implementaciones
     public class AutoresPresentacion : IAutoresPresentacion
     {
         private readonly Comunicaciones Comunicaciones = new Comunicaciones();
+        private string? token;
+
+        public void ponerToken(string token)
+        {
+            this.token = token;
+        }
 
         public async Task<List<Autores>> Listar()
         {
-            var datos = new Dictionary<string, object>();
+            var datos = new Dictionary<string, object>()
+            {
+                { "Bearer", token! }
+            };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Autores/Listar");
 
@@ -42,7 +51,8 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "nombre", nombre }
+                { "nombre", nombre },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Autores/PorNombre");
@@ -56,13 +66,15 @@ namespace lib_presentaciones.Implementaciones
         }
 
         public async Task<Autores?> Guardar(Autores? entidad)
+
         {
             if (entidad == null)
                 throw new ArgumentNullException(nameof(entidad));
 
             var datos = new Dictionary<string, object>
             {
-                { "Entidad", JsonConversor.ConvertirAString(entidad) }
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Autores/Guardar");
@@ -81,7 +93,8 @@ namespace lib_presentaciones.Implementaciones
 
             var datos = new Dictionary<string, object>
             {
-                { "Entidad", JsonConversor.ConvertirAString(entidad) }
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Autores/Modificar");
@@ -97,7 +110,8 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "id", Id }
+                { "id", Id },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Autores/Borrar");

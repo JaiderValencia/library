@@ -8,11 +8,20 @@ namespace lib_presentaciones.Implementaciones
     public class Niveles_tiene_LibrosPresentacion : INiveles_tiene_LibrosPresentacion
     {
         private Comunicaciones? comunicaciones = null;
+        private string? token;
+
+        public void ponerToken(string token)
+        {
+            this.token = token;
+        }
 
         public async Task<List<Niveles_tiene_Libros>> Listar()
         {
             var lista = new List<Niveles_tiene_Libros>();
-            var datos = new Dictionary<string, object>();
+            var datos = new Dictionary<string, object>()
+            {
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles_tiene_Libros/Listar");
@@ -30,8 +39,11 @@ namespace lib_presentaciones.Implementaciones
 
         public async Task<Niveles_tiene_Libros?> PorId(int Id)
         {
-            var datos = new Dictionary<string, object>();
-            datos["Id"] = Id!;
+            var datos = new Dictionary<string, object>
+            {
+                { "id", Id },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles_tiene_Libros/PorId");
@@ -53,8 +65,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad;
+            var datos = new Dictionary<string, object>
+            {
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles_tiene_Libros/Guardar");
@@ -76,8 +91,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad;
+            var datos = new Dictionary<string, object>
+            {
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles_tiene_Libros/Modificar");
@@ -99,8 +117,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Id"] = Id;
+            var datos = new Dictionary<string, object>
+            {
+                { "id", Id },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles_tiene_Libros/Borrar");

@@ -7,11 +7,20 @@ namespace lib_presentaciones.Implementaciones
     public class PrestamosPresentacion : IPrestamosPresentacion
     {
         private Comunicaciones? comunicaciones = null;
+        private string? token;
+
+        public void ponerToken(string token)
+        {
+            this.token = token;
+        }
 
         public async Task<List<Prestamos>> Listar()
         {
             var lista = new List<Prestamos>();
-            var datos = new Dictionary<string, object>();
+            var datos = new Dictionary<string, object>()
+            {
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Prestamos/Listar");
@@ -29,8 +38,11 @@ namespace lib_presentaciones.Implementaciones
 
         public async Task<List<Prestamos>?> PorFechaInicio(DateTime FechaInicio)
         {
-            var datos = new Dictionary<string, object>();
-            datos["FechaInicio"] = FechaInicio.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            var datos = new Dictionary<string, object>
+            {
+                { "FechaInicio", FechaInicio.ToString("yyyy-MM-dd HH:mm:ss.fff") },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Prestamos/PorFechaInicio");
@@ -47,8 +59,11 @@ namespace lib_presentaciones.Implementaciones
 
         public async Task<Prestamos?> PorId(int Id)
         {
-            var datos = new Dictionary<string, object>();
-            datos["Id"] = Id!;
+            var datos = new Dictionary<string, object>
+            {
+                { "id", Id },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Prestamos/PorId");
@@ -70,8 +85,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad;
+            var datos = new Dictionary<string, object>
+            {
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Prestamos/Guardar");
@@ -93,8 +111,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad;
+            var datos = new Dictionary<string, object>
+            {
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Prestamos/Modificar");
@@ -116,8 +137,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Id"] = Id;
+            var datos = new Dictionary<string, object>
+            {
+                { "id", Id },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Prestamos/Borrar");

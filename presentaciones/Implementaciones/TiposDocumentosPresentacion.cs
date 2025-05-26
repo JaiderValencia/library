@@ -2,17 +2,27 @@
 using lib_dominio.Nucleo;
 using lib_presentaciones.Interfaces;
 using presentaciones.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lib_presentaciones.Implementaciones
 {
     public class TiposDocumentosPresentacion : ITiposDocumentosPresentacion
     {
         private Comunicaciones? comunicaciones = null;
+        private string? token;
+
+        public void ponerToken(string token)
+        {
+            this.token = token;
+        }
 
         public async Task<List<TiposDocumentos>> Listar()
         {
+            var datos = new Dictionary<string, object>()
+            {
+                { "Bearer", token! }
+            };
             var lista = new List<TiposDocumentos>();
-            var datos = new Dictionary<string, object>();
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "TiposDocumentos/Listar");
@@ -29,8 +39,11 @@ namespace lib_presentaciones.Implementaciones
         }
         public async Task<List<TiposDocumentos>?> PorNombre(string Nombre)
         {
-            var datos = new Dictionary<string, object>();
-            datos["Nombre"] = Nombre!;
+            var datos = new Dictionary<string, object>
+            {
+                { "nombre", Nombre },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles/PorNombre");
@@ -47,8 +60,11 @@ namespace lib_presentaciones.Implementaciones
 
         public async Task<TiposDocumentos?> PorId(int Id)
         {
-            var datos = new Dictionary<string, object>();
-            datos["Id"] = Id!;
+            var datos = new Dictionary<string, object>
+            {
+                { "id", Id },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "TiposDocumentos/PorId");
@@ -70,8 +86,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad;
+            var datos = new Dictionary<string, object>
+            {
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "TiposDocumentos/Guardar");
@@ -93,8 +112,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad;
+            var datos = new Dictionary<string, object>
+            {
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "TiposDocumentos/Modificar");
@@ -116,8 +138,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Id"] = Id;
+            var datos = new Dictionary<string, object>
+            {
+                { "id", Id },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "TiposDocumentos/Borrar");

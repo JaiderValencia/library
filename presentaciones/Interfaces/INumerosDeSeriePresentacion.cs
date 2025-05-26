@@ -9,6 +9,8 @@ namespace lib_presentaciones.Interfaces
 {
     public interface INumerosDeSeriePresentacion
     {
+        void ponerToken(string token);
+
         Task<NumerosDeSerie?> PorId(int Id);
         Task<List<NumerosDeSerie>?> PorNumeroSerie(string NumeroSerie);
         Task<List<NumerosDeSerie>> Listar();

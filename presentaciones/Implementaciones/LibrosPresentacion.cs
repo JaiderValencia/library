@@ -7,13 +7,20 @@ namespace lib_presentaciones.Implementaciones
     public class LibrosPresentacion : ILibrosPresentacion
     {
         private readonly Comunicaciones Comunicaciones = new Comunicaciones();
+        private string? token;
+
+        public void ponerToken(string token)
+        {
+            this.token = token;
+        }
 
         public async Task<List<Libros>> Listar(int pagina = 1)
         {
             var datos = new Dictionary<string, object>
             {
                 { "pagina", pagina },
-                { "tamañoPagina", 20 }
+                { "tamañoPagina", 20 },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Libros/Listar");
@@ -29,7 +36,8 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "id", Id }
+                { "id", Id },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Libros/PorId");
@@ -45,7 +53,8 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "nombre", nombre }
+                { "nombre", nombre },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Libros/PorNombre");
@@ -61,7 +70,8 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "entidad", JsonConversor.ConvertirAString(entidad) }
+                { "entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Libros/Guardar");
@@ -77,7 +87,8 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "entidad", JsonConversor.ConvertirAString(entidad) }
+                { "entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Libros/Modificar");
@@ -93,7 +104,8 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "id", Id }
+                { "id", Id },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Libros/Borrar");

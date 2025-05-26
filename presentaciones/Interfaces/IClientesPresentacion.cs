@@ -4,6 +4,8 @@ namespace lib_presentaciones.Interfaces
 {
     public interface IClientesPresentacion
     {
+        void ponerToken(string token);
+
         Task<Clientes?> PorId(int id);
         Task<List<Clientes>> PorNombre(string nombre);
         Task<List<Clientes>> PorDocumento(string documento);

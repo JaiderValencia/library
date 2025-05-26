@@ -4,6 +4,8 @@ namespace lib_presentaciones.Interfaces
 {
     public interface ICategoriasPresentacion
     {
+        void ponerToken(string token);
+
         Task<Categorias?> PorId(int Id);
         Task<List<Categorias>> PorNombre(string nombre);
         Task<List<Categorias>> Listar();

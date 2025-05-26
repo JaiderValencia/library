@@ -1,17 +1,27 @@
 ﻿using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
 using presentaciones.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lib_presentaciones.Implementaciones
 {
     public class NivelesPresentacion : INivelesPresentacion
     {
         private Comunicaciones? comunicaciones = null;
+        private string? token;
+
+        public void ponerToken(string token)
+        {
+            this.token = token;
+        }
 
         public async Task<List<Niveles>> Listar()
         {
             var lista = new List<Niveles>();
-            var datos = new Dictionary<string, object>();
+            var datos = new Dictionary<string, object>()
+            {
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles/Listar");
@@ -29,8 +39,11 @@ namespace lib_presentaciones.Implementaciones
 
         public async Task<List<Niveles>> PorNombre(string Nombre)
         {
-            var datos = new Dictionary<string, object>();
-            datos["Nombre"] = Nombre!;
+            var datos = new Dictionary<string, object>
+            {
+                { "nombre", Nombre },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles/PorNombre");
@@ -46,8 +59,11 @@ namespace lib_presentaciones.Implementaciones
         }
         public async Task<Niveles?> PorId(int Id)
         {
-            var datos = new Dictionary<string, object>();
-            datos["Id"] = Id!;
+            var datos = new Dictionary<string, object>
+            {
+                { "id", Id },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles/PorId");
@@ -69,8 +85,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad;
+            var datos = new Dictionary<string, object>
+            {
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles/Guardar");
@@ -92,8 +111,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad;
+            var datos = new Dictionary<string, object>
+            {
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles/Modificar");
@@ -115,8 +137,11 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
-            var datos = new Dictionary<string, object>();
-            datos["Id"] = Id;
+            var datos = new Dictionary<string, object>
+            {
+                { "id", Id },
+                { "Bearer", token! }
+            };
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Niveles/Borrar");

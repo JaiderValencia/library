@@ -9,6 +9,8 @@ namespace lib_presentaciones.Interfaces
 {
     public interface INiveles_tiene_LibrosPresentacion
     {
+        void ponerToken(string token);
+
         Task<Niveles_tiene_Libros?> PorId(int Id);
         Task<List<Niveles_tiene_Libros>> Listar();
         Task<Niveles_tiene_Libros?> Guardar(Niveles_tiene_Libros? entidad);

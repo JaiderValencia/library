@@ -4,6 +4,8 @@ namespace lib_presentaciones.Interfaces
 {
     public interface ILibrosPresentacion
     {
+        void ponerToken(string token);
+
         Task<List<Libros>> Listar(int pagina = 1);
 
         Task<Libros?> PorId(int Id);

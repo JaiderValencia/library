@@ -15,10 +15,19 @@ namespace asp_servicios.Controllers
     public class TokenController : ControllerBase
     {
         private readonly IAdministradoresAplicacion administradoresAplicacion;
+        private readonly IAccesosAplicacion? accesosAplicacion;
 
-        public TokenController(IAdministradoresAplicacion administradoresAplicacion)
+        private int? AccesoId { get; set; }
+
+        public TokenController(IAdministradoresAplicacion administradoresAplicacion, IAccesosAplicacion accesosAplicacion)
         {
             this.administradoresAplicacion = administradoresAplicacion;
+            this.accesosAplicacion = accesosAplicacion;            
+        }
+
+        public void ponerAccesoId(int? accesoId)
+        {
+            this.AccesoId = accesoId;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -56,7 +65,7 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lb Falta usuario o contraseña";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-
+                
                 var administrador = administradoresAplicacion.ObtenerUnoNombre(nombre);
 
                 if (administrador == null || !Bcrypt.Verify(password, administrador!.Password))
@@ -109,7 +118,10 @@ namespace asp_servicios.Controllers
                 bool validarTiempo = DateTime.UtcNow < token.ValidTo;
 
                 bool validarId = this.administradoresAplicacion.PorId(administradorId) != null;
-                return validarTiempo && validarId;
+
+                bool validarAcceso = this.accesosAplicacion!.validarAcceso(administradorId, AccesoId ?? 0);
+
+                return validarTiempo && validarId && validarAcceso;
             }
             catch
             {

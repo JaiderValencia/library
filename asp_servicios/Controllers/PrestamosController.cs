@@ -17,6 +17,7 @@ namespace asp_servicios.Controllers
         {
             this.iPrestamosAplicacion = iAplicacion;
             this.tokenController = tokenController;
+            tokenController!.ponerAccesoId(9);
         }
 
         private Dictionary<string, object> ObtenerDatos()

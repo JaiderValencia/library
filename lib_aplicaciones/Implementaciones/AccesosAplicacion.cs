@@ -51,13 +51,29 @@ namespace lib_aplicaciones.Implementaciones
             return this.conexion!.Accesos!.FirstOrDefault(x => x.Id == Id);
         }
 
+        public bool validarAcceso(int AdministradorId, int AccesoId)
+        {
+            var acceso = this.conexion!.Accesos!
+                .FirstOrDefault(x => x.Id == AccesoId);
+
+            if (acceso == null)
+                throw new Exception("lbNoExisteAcceso");                        
+
+            var roleAdministrador = this.conexion!.Administradores!
+                .FirstOrDefault(Administrador => Administrador.Id == AdministradorId)!.Role;
+
+            var tieneAcceso = this.conexion!.Roles_tiene_Accesos!.Any(x => x.Acceso == AccesoId && x.Role == roleAdministrador);
+
+            return tieneAcceso;
+        }
+
         public Accesos? Modificar(Accesos? entidad)
         {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
             if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");            
+                throw new Exception("lbNoSeGuardo");
 
             var entry = this.conexion!.Entry<Accesos>(entidad);
             entry.State = EntityState.Modified;

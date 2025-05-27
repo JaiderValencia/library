@@ -11,7 +11,7 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Prestamos>? PorFechaInicio(DateTime FechaInicio)
         {
-            return this.conexion!.Prestamos
+            return this.conexion!.Prestamos!
                 .Include(Prestamos => Prestamos._Cliente)
                 .Include(Prestamos => Prestamos._NumeroSerie._Libro)
                 .Where(x => x.FechaInicio.Date == FechaInicio.Date)
@@ -47,7 +47,7 @@ namespace lib_aplicaciones.Implementaciones
         public List<Prestamos> Listar()
         {
             return this.conexion!.Prestamos!
-                .Include(Prestamo => Prestamo._Cliente!._TipoDocumento)
+                .Include(Prestamo => Prestamo._Cliente!)
                 .Include(Prestamo => Prestamo._NumeroSerie!._Libro)
                 .Take(20).ToList();
         }

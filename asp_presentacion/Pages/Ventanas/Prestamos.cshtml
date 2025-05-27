@@ -1,7 +1,7 @@
 ﻿@page
-@model asp_presentacion.Pages.Ventanas.Niveles_tiene_LibrosModel
+@model asp_presentacion.Pages.Ventanas.PrestamosModel
 @{
-    ViewData["Title"] = "Niveles_tiene_Libros";
+    ViewData["Title"] = "Prestamos";
 }
 
 @if (!string.IsNullOrEmpty(ViewData["Error"] as string))
@@ -43,7 +43,16 @@
                     Id
                 </th>
                 <th>
-                    Nivel
+                    Fecha de Inicio
+                </th>
+                <th>
+                    Fecha de Final
+                </th>
+                <th>
+                    Fecha de Entregado
+                </th>
+                <th>
+                    Cliente
                 </th>
                 <th>
                     Libro
@@ -52,26 +61,35 @@
                     Accion
                 </th>
             </tr>
-            @if (Model.Niveles_tiene_Libros != null)
+            @if (Model.Prestamos != null)
             {
-                @foreach (var Nivel_tiene_Libro in Model.Niveles_tiene_Libros)
+                @foreach (var Prestamo in Model.Prestamos)
                 {
                     <tr>
                         <td>
-                            @Nivel_tiene_Libro.Id
+                            @Prestamo.Id
                         </td>
                         <td>
-                            @Nivel_tiene_Libro._Nivel?.Nombre
+                            @Prestamo.FechaInicio
                         </td>
                         <td>
-                            @Nivel_tiene_Libro._Libro?.Nombre
+                            @Prestamo.FechaFinal
+                        </td>
+                        <td>
+                            @Prestamo.FechaEntregado
+                        </td>
+                        <td>
+                            @Prestamo._Cliente?.Nombre
+                        </td>
+                        <td>
+                            @Prestamo._NumeroSerie?._Libro?.Nombre
                         </td>
                         <td>
                             <form method="post" class='d-flex gap-3'>
                                 <input type="submit" value="Modicar" asp-page-handler="VistaModificar" class="btn btn-warning"
-                                       asp-route-data="@Nivel_tiene_Libro.Id" />
+                                       asp-route-data="@Prestamo.Id" />
                                 <input type="submit" value="Borrar" asp-page-handler="Borrar" class="btn btn-danger"
-                                       asp-route-data="@Nivel_tiene_Libro.Id" />
+                                       asp-route-data="@Prestamo.Id" />
                             </form>
                         </td>
                     </tr>
@@ -85,36 +103,45 @@
 lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
 {
     <div class="containers_vn panel panel-default">
-        <h3>Nivel tiene Libro: @Model.Nivel_tiene_Libro!.Id</h3>
+        <h3>Prestamo: @Model.Prestamo!.Id</h3>
 
 
         <form method="post">
-            <input type="hidden" asp-for="@Model.Nivel_tiene_Libro.Id" />
-
+            <input type="hidden" asp-for="@Model.Prestamo.Id" />
             <div class="form-group mt-4">
-                <label class="col-lg-4 control-label">
-                    Nombre
-                </label>
+                <label class="col-lg-4 control label">Fecha de Inicio</label>
                 <div class="col-lg-6">
-                    <input id="nmMateria" class="cts_forms form-control" asp-for="@Model.Nivel_tiene_Libro!.Id" />
+                    <input type="date" class="cts_forms form-control" asp-for="@Model.Prestamo!.FechaInicio" />
                 </div>
-            </div>            
+            </div>
+            <div class="form-group mt-4">
+                <label class="col-lg-4 control label">Fecha de Final</label>
+                <div class="col-lg-6">
+                    <input type="date" class="cts_forms form-control" asp-for="@Model.Prestamo!.FechaFinal" />
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <label class="col-lg-4 control label">Fecha de Entrega</label>
+                <div class="col-lg-6">
+                    <input type="date" class="cts_forms form-control" asp-for="@Model.Prestamo!.FechaEntregado" />
+                </div>
+            </div>
             <div class="form-group mt-4">
                 <label class="col-lg-4 control-label">
-                    Niveles
+                    Estanteria
                 </label>
                 <div class="col-lg-6">
-                    <select asp-for="@Model.Nivel_tiene_Libro.Nivel" class="form-select">
-                        @if (Model.Niveles == null || Model.Niveles.Count == 0)
+                    <select asp-for="@Model.Prestamo._Cliente!.Nombre" class="form-select">
+                        @if (Model.Clientes == null || Model.Clientes.Count == 0)
                         {
-                            <option value="">No hay Niveles disponibles</option>
+                            <option value="">No hay Clientes disponibles</option>
                         }
                         else
                         {
-                            @foreach (var Nivel in Model.Niveles)
+                            @foreach (var Cliente in Model.Clientes)
                             {
-                                <option value="@Nivel.Id">
-                                    @Nivel.Nombre
+                                <option value="@Cliente.Id">
+                                    @Cliente.Nombre
                                 </option>
                             }
                         }
@@ -123,20 +150,20 @@ lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
             </div>
             <div class="form-group mt-4">
                 <label class="col-lg-4 control-label">
-                    Libro
+                    Estanteria
                 </label>
                 <div class="col-lg-6">
-                    <select asp-for="@Model.Nivel_tiene_Libro.Libro" class="form-select">
-                        @if (Model.Libros == null || Model.Libros.Count == 0)
+                    <select asp-for="@Model.Prestamo._NumeroSerie!._Libro!.Nombre" class="form-select">
+                        @if (Model.NumerosDeSerie == null || Model.NumerosDeSerie.Count == 0)
                         {
                             <option value="">No hay Libros disponibles</option>
                         }
                         else
                         {
-                            @foreach (var Libro in Model.Libros)
+                            @foreach (var NumeroSerie in Model.NumerosDeSerie)
                             {
-                                <option value="@Libro.Id">
-                                    @Libro.Nombre
+                                <option value="@NumeroSerie.Id">
+                                    @NumeroSerie._Libro!.Nombre
                                 </option>
                             }
                         }
@@ -146,7 +173,7 @@ lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
             <div class="form-group mt-4">
                 <input type="submit" value="Guardar" asp-page-handler=@(Model.VentanaActual ==
                                                                         lib_dominio.Nucleo.Enumerables.Ventanas.Editar ? "Modificar" : "Crear") class="btn btn-primary" />
-            <a href="/Ventanas/Niveles_tiene_Libros" class='btn btn-danger'>Cancelar</a>
+            <a href="/Ventanas/Prestamos" class='btn btn-danger'>Cancelar</a>
         </div>
     </form>
 </div>

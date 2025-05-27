@@ -8,29 +8,30 @@ using presentaciones.Interfaces;
 
 namespace asp_presentacion.Pages.Ventanas
 {
-    public class Niveles_tiene_LibrosModel : PageModel
+    public class PrestamosModel : PageModel
     {
-        private readonly INiveles_tiene_LibrosPresentacion? iPresentacion;
-        private readonly ILibrosPresentacion? LibrosPresentacion;
-        private readonly INivelesPresentacion? NivelesPresentacion;
+        private readonly IPrestamosPresentacion? iPresentacion;
+        private readonly IClientesPresentacion? ClientesPresentacion;
+        private readonly INumerosDeSeriePresentacion? NumerosDeSeriePresentacion;
 
-        public List<Niveles_tiene_Libros>? Niveles_tiene_Libros { get; set; }
-        public List<Libros>? Libros { get; set; }
-        public List<Niveles>? Niveles { get; set; }
+        public List<Prestamos>? Prestamos { get; set; }
+        public List<Clientes>? Clientes { get; set; }
+        public List<NumerosDeSerie>? NumerosDeSerie { get; set; }
 
-        [BindProperty] public Niveles_tiene_Libros? Nivel_tiene_Libro { get; set; } = null;
+        [BindProperty] public Prestamos? Prestamo { get; set; } = null;
         public Enumerables.Ventanas VentanaActual { get; set; } = Enumerables.Ventanas.Listas;
 
         public Dictionary<string, int> opcionesBuscador { get; } = new Dictionary<string, int>
         {
             { "PorId", 1 },
+            { "PorFechaInicio", 2 }
         };
 
-        public Niveles_tiene_LibrosModel(INiveles_tiene_LibrosPresentacion? Niveles_tiene_LibrosPresentacion, ILibrosPresentacion? LibrosPresentacion, INivelesPresentacion? NivelesPresentacion)
+        public PrestamosModel(IPrestamosPresentacion? PrestamosPresentacion, IClientesPresentacion? ClientesPresentacion, INumerosDeSeriePresentacion? NumerosDeSeriePresentacion)
         {
-            this.iPresentacion = Niveles_tiene_LibrosPresentacion;
-            this.LibrosPresentacion = LibrosPresentacion;
-            this.NivelesPresentacion = NivelesPresentacion;
+            this.iPresentacion = PrestamosPresentacion;
+            this.ClientesPresentacion = ClientesPresentacion;
+            this.NumerosDeSeriePresentacion = NumerosDeSeriePresentacion;
         }
 
         private void comprobarToken()
@@ -44,8 +45,8 @@ namespace asp_presentacion.Pages.Ventanas
             }
 
             this.iPresentacion?.ponerToken(token);
-            this.LibrosPresentacion?.ponerToken(token);
-            this.NivelesPresentacion?.ponerToken(token);
+            this.ClientesPresentacion?.ponerToken(token);
+            this.NumerosDeSeriePresentacion?.ponerToken(token);
         }
 
         public void OnGet()
@@ -67,23 +68,30 @@ namespace asp_presentacion.Pages.Ventanas
 
                 if (opcion == this.opcionesBuscador["PorId"])
                 {
-                    var Nivel_tiene_LibroTask = this.iPresentacion?.PorId(Convert.ToInt32(data));
-                    Nivel_tiene_LibroTask!.Wait();
+                    var PrestamoTask = this.iPresentacion?.PorId(Convert.ToInt32(data));
+                    PrestamoTask!.Wait();
 
 
-                    if (Nivel_tiene_LibroTask.Result == null)
+                    if (PrestamoTask.Result == null)
                     {
-                        this.Niveles_tiene_Libros = null;
+                        this.Prestamos = null;
                         return;
                     }
 
-                    this.Niveles_tiene_Libros = new List<Niveles_tiene_Libros> { Nivel_tiene_LibroTask.Result };
-                }                
+                    this.Prestamos = new List<Prestamos> { PrestamoTask.Result };
+                }
+                else if (opcion == this.opcionesBuscador["PorFechaInicio"])
+                {
+                    var PrestamosTask = this.iPresentacion?.PorFechaInicio(Convert.ToDateTime(data));
+                    PrestamosTask!.Wait();
+
+                    this.Prestamos = PrestamosTask.Result!;
+                }
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al buscar Numero De Serie.";
+                ViewData["Error"] = "Ocurrió un error al buscar Prestamo.";
             }
         }
 
@@ -92,15 +100,15 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 VentanaActual = Enumerables.Ventanas.Listas;
-                var Niveles_tiene_LibrosTask = this.iPresentacion?.Listar();
-                Niveles_tiene_LibrosTask!.Wait();
+                var PrestamosTask = this.iPresentacion?.Listar();
+                PrestamosTask!.Wait();
 
-                this.Niveles_tiene_Libros = Niveles_tiene_LibrosTask.Result;
+                this.Prestamos = PrestamosTask.Result;
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al cargar los Numeros De Serie.";
+                ViewData["Error"] = "Ocurrió un error al cargar los Prestamos.";
             }
         }
 
@@ -118,7 +126,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al borrar el Numero De Serie.";
+                ViewData["Error"] = "Ocurrió un error al borrar el Prestamo.";
             }
         }
 
@@ -129,50 +137,50 @@ namespace asp_presentacion.Pages.Ventanas
                 comprobarToken();
                 this.VentanaActual = Enumerables.Ventanas.Editar;
 
-                var Nivel_tiene_LibroTask = this.iPresentacion?.PorId(Convert.ToInt32(data));
-                Nivel_tiene_LibroTask!.Wait();
+                var PrestamoTask = this.iPresentacion?.PorId(Convert.ToInt32(data));
+                PrestamoTask!.Wait();
 
-                obtenerNiveles();
-                obtenerLibros();
+                obtenerNumerosDeSerie();
+                obtenerClientes();
 
-                this.Nivel_tiene_Libro = Nivel_tiene_LibroTask.Result;
+                this.Prestamo = PrestamoTask.Result;
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al cargar el Numero De Serie para editar.";
+                ViewData["Error"] = "Ocurrió un error al cargar el Prestamo para editar.";
             }
         }
 
-        public void obtenerLibros()
+        public void obtenerClientes()
         {
             try
             {
-                var LibrosTask = this.LibrosPresentacion?.Listar();
-                LibrosTask!.Wait();
+                var ClientesTask = this.ClientesPresentacion?.Listar(1);
+                ClientesTask!.Wait();
 
-                this.Libros = LibrosTask.Result;
+                this.Clientes = ClientesTask.Result;
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al cargar los Libros para editar.";
+                ViewData["Error"] = "Ocurrió un error al cargar los Clientes para editar.";
             }
         }
 
-        public void obtenerNiveles()
+        public void obtenerNumerosDeSerie()
         {
             try
             {
-                var NivelesTask = this.NivelesPresentacion?.Listar();
-                NivelesTask!.Wait();
+                var NumerosDeSerieTask = this.NumerosDeSeriePresentacion?.Listar();
+                NumerosDeSerieTask!.Wait();
 
-                this.Niveles = NivelesTask.Result;
+                this.NumerosDeSerie = NumerosDeSerieTask.Result;
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al cargar los Niveles para editar.";
+                ViewData["Error"] = "Ocurrió un error al cargar los Numeros de serie para editar.";
             }
         }
 
@@ -181,18 +189,18 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 comprobarToken();
-                var modificarTask = this.iPresentacion?.Modificar(this.Nivel_tiene_Libro!);
+                var modificarTask = this.iPresentacion?.Modificar(this.Prestamo!);
                 modificarTask!.Wait();
 
                 this.VentanaActual = Enumerables.Ventanas.Editar;
-                this.Nivel_tiene_Libro = modificarTask.Result;
-                obtenerLibros();
-                obtenerNiveles();
+                this.Prestamo = modificarTask.Result;
+                obtenerClientes();
+                obtenerNumerosDeSerie();
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al cargar el Numero De Serie para editar.";
+                ViewData["Error"] = "Ocurrió un error al cargar el Prestamo para editar.";
             }
         }
 
@@ -202,15 +210,15 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 this.VentanaActual = Enumerables.Ventanas.Crear;
                 comprobarToken();
-                obtenerLibros();
-                obtenerNiveles();
+                obtenerClientes();
+                obtenerNumerosDeSerie();
 
-                this.Nivel_tiene_Libro = new Niveles_tiene_Libros();
+                this.Prestamo = new Prestamos();
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al cargar la vista para crear un Numero De Serie.";
+                ViewData["Error"] = "Ocurrió un error al cargar la vista para crear un Prestamo.";
             }
         }
 
@@ -219,7 +227,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 comprobarToken();
-                var crearTask = this.iPresentacion?.Guardar(this.Nivel_tiene_Libro!);
+                var crearTask = this.iPresentacion?.Guardar(this.Prestamo!);
                 crearTask!.Wait();
 
                 this.VentanaActual = Enumerables.Ventanas.Listas;
@@ -228,7 +236,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al crear el Numero De Serie.";
+                ViewData["Error"] = "Ocurrió un error al crear el Prestamo.";
             }
         }
     }

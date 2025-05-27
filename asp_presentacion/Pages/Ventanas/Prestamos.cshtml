@@ -131,7 +131,7 @@ lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
                     Estanteria
                 </label>
                 <div class="col-lg-6">
-                    <select asp-for="@Model.Prestamo._Cliente!.Nombre" class="form-select">
+                    <select asp-for="@Model.Prestamo.Cliente" class="form-select">
                         @if (Model.Clientes == null || Model.Clientes.Count == 0)
                         {
                             <option value="">No hay Clientes disponibles</option>
@@ -153,7 +153,7 @@ lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
                     Estanteria
                 </label>
                 <div class="col-lg-6">
-                    <select asp-for="@Model.Prestamo._NumeroSerie!._Libro!.Nombre" class="form-select">
+                    <select asp-for="@Model.Prestamo.NumeroSerie" class="form-select">
                         @if (Model.NumerosDeSerie == null || Model.NumerosDeSerie.Count == 0)
                         {
                             <option value="">No hay Libros disponibles</option>

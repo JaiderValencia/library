@@ -65,7 +65,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                respuesta["Entidad"] = this.iNivelesAplicacion!.PorId(Convert.ToInt32(datos["id"]));
+                respuesta["Entidad"] = this.iNivelesAplicacion!.PorId(Convert.ToInt32(datos["id"]))!;
 
                 respuesta["Respuesta"] = "OK";
 
@@ -94,7 +94,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
                
-                respuesta["Entidades"] = this.iNivelesAplicacion!.PorNombre(datos["nombre"].ToString());
+                respuesta["Entidades"] = this.iNivelesAplicacion!.PorNombre(datos["nombre"].ToString()!)!;
 
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
@@ -120,7 +120,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var entidad = JsonConversor.ConvertirAObjeto<Niveles>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var entidad = JsonConversor.ConvertirAObjeto<Niveles>(datos["Entidad"].ToString()!);
 
                 entidad = this.iNivelesAplicacion!.Guardar(entidad);
 
@@ -149,7 +149,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var entidad = JsonConversor.ConvertirAObjeto<Niveles>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var entidad = JsonConversor.ConvertirAObjeto<Niveles>(datos["Entidad"].ToString()!);
 
                 entidad = this.iNivelesAplicacion!.Modificar(entidad);
 

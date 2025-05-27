@@ -44,7 +44,7 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<NumerosDeSerie> Listar()
         {
-            return this.conexion!.NumerosDeSerie!.Take(20).ToList();
+            return this.conexion!.NumerosDeSerie!.Include(NumeroSerie => NumeroSerie._Libro).Take(20).ToList();
         }
 
         public NumerosDeSerie? PorId(int Id)

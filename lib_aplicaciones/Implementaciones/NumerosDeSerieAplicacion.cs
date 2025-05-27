@@ -30,7 +30,7 @@ namespace lib_aplicaciones.Implementaciones
         }
 
         public NumerosDeSerie? Guardar(NumerosDeSerie? entidad)
-        {            
+        {
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 

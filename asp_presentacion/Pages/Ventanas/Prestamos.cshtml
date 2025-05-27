@@ -22,8 +22,8 @@
 
     <div class='d-flex flex-column'>
         <form method="post" class="d-flex gap-3">
-            <input name='data' id="flNombre" class="cts_forms form-control" placeholder="Nombre" />
-            <select name="opcion" id="flOpcion" class="cts_forms form-select">
+            <input name='data' id="buscadorSelect" class="cts_forms form-control" placeholder="Nombre" />
+            <select name="opcion" id="buscadorOpcion" class="cts_forms form-select">
                 @foreach (var opcion in Model.opcionesBuscador)
                 {
                     <option value="@opcion.Value">@opcion.Key</option>
@@ -32,6 +32,12 @@
 
             <input type="submit" value="Buscar" class="btn btn-primary" asp-page-handler="Buscar" />
         </form>
+
+        <script>
+            buscadorOpcion.addEventListener('change',()=>{
+                buscadorOpcion.value == 2 ? buscadorSelect.type = 'date' : buscadorSelect.type = 'text'
+            })
+        </script>
 
     </div>
     <br />
@@ -76,7 +82,7 @@
                             @Prestamo.FechaFinal
                         </td>
                         <td>
-                            @Prestamo.FechaEntregado
+                            @(Prestamo.FechaEntregado != null ? Prestamo.FechaEntregado : "No se ha entregado aún")
                         </td>
                         <td>
                             @Prestamo._Cliente?.Nombre
@@ -128,7 +134,7 @@ lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
             </div>
             <div class="form-group mt-4">
                 <label class="col-lg-4 control-label">
-                    Estanteria
+                    Clientes
                 </label>
                 <div class="col-lg-6">
                     <select asp-for="@Model.Prestamo.Cliente" class="form-select">
@@ -150,7 +156,7 @@ lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
             </div>
             <div class="form-group mt-4">
                 <label class="col-lg-4 control-label">
-                    Estanteria
+                    Libros
                 </label>
                 <div class="col-lg-6">
                     <select asp-for="@Model.Prestamo.NumeroSerie" class="form-select">

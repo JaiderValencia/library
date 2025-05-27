@@ -60,9 +60,7 @@ namespace lib_aplicaciones.Implementaciones
 
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
-
-            entidad.Libro = 2;
-
+    
             var entry = this.conexion!.Entry<Niveles_tiene_Libros>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();

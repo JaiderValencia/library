@@ -66,9 +66,7 @@ namespace lib_aplicaciones.Implementaciones
 
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
-
-            entidad.NumeroSerie = 2;
-
+            
             var entry = this.conexion!.Entry<Prestamos>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();

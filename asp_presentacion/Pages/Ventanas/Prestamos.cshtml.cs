@@ -214,6 +214,8 @@ namespace asp_presentacion.Pages.Ventanas
                 obtenerNumerosDeSerie();
 
                 this.Prestamo = new Prestamos();
+                this.Prestamo.FechaInicio = DateTime.Now;
+                this.Prestamo.FechaFinal = DateTime.Now.AddDays(7);
             }
             catch (Exception ex)
             {

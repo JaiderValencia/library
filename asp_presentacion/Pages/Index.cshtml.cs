@@ -42,8 +42,11 @@ namespace asp_presentacion.Pages
             if (!string.IsNullOrEmpty(variable_session))
             {
                 EstaLogueado = true;
+
+                ViewData["Logged"] = true;
                 return;
             }
+            ViewData["Logged"] = false;
         }
 
         public void OnPostBtClean()

@@ -6,7 +6,7 @@ namespace lib_dominio.Entidades
     public class Roles_tiene_Accesos
     {
         [Key] public int Id { get; set; }
-        public int Rol { get; set; }
+        public int Role { get; set; }
         public int Acceso { get; set; }
 
         [ForeignKey("Rol")] public Roles? _Rol { get; set; }

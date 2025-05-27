@@ -16,6 +16,7 @@ namespace asp_servicios.Controllers
         {
             this.EstanteriasAplicacion = EstanteriasAplicacion;
             this.tokenController = tokenController;
+            tokenController!.ponerAccesoId(3);
         }
 
         private Dictionary<string, object> ObtenerDatos()

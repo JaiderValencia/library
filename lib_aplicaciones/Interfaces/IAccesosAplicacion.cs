@@ -5,6 +5,8 @@ namespace lib_aplicaciones.Interfaces
 {
     public interface IAccesosAplicacion
     {
+
+        public bool validarAcceso(int AdministradorId, int AccesoId);
         Accesos? PorId(int Id);
         List<Accesos>? PorNombre(string nombre);
         List<Accesos> Listar();

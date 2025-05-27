@@ -16,6 +16,7 @@ namespace asp_servicios.Controllers
         {
             this.ClientesAplicacion = ClientesAplicacion;
             this.tokenController = tokenController;
+            tokenController!.ponerAccesoId(2);
         }
 
         private Dictionary<string, object> ObtenerDatos()

@@ -17,6 +17,7 @@ namespace asp_servicios.Controllers
         {
             this.iNiveles_tiene_LibrosAplicacion = iAplicacion;
             this.tokenController = tokenController;
+            tokenController!.ponerAccesoId(14);
         }
 
         private Dictionary<string, object> ObtenerDatos()

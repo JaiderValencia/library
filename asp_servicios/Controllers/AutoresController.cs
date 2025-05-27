@@ -17,6 +17,7 @@ namespace asp_servicios.Controllers
         {
             this.iAutoresAplicacion = iAplicacion;
             this.tokenController = tokenController;
+            this.tokenController!.ponerAccesoId(6);
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -54,7 +55,8 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
-        public string PorId() { 
+        public string PorId()
+        {
             var respuesta = new Dictionary<string, object>();
             try
             {
@@ -93,7 +95,7 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-               
+
                 respuesta["Entidades"] = this.iAutoresAplicacion!.PorNombre(datos["nombre"].ToString());
 
                 respuesta["Respuesta"] = "OK";
@@ -177,7 +179,7 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-                
+
                 var entidad = this.iAutoresAplicacion!.Borrar(Convert.ToInt32(datos["id"]));
 
                 respuesta["Entidad"] = entidad!;

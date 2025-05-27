@@ -9,8 +9,8 @@ namespace lib_presentaciones.Interfaces
         Task<Autores?> PorId(int Id);
         Task<List<Autores>?> PorNombre(string nombre);
         Task<List<Autores>> Listar();
-        Task<Autores?> Guardar(Autores? entidad);
-        Task<Autores?> Modificar(Autores? entidad);
+        Task<Autores?> Guardar(Autores entidad);
+        Task<Autores?> Modificar(Autores entidad);
         Task<Autores?> Borrar(int Id);
     }
 }

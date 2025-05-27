@@ -206,7 +206,7 @@ INSERT INTO [Prestamos] ([FechaInicio],[FechaFinal],[FechaEntregado],[Cliente],[
 VALUES ('2024/04/08 7:20:20','2024/04/08 7:20:20',NULL,4,4)
 SELECT * FROM [Prestamos]
 
-INSERT INTO [Roles] ([Nombre]) VALUES ('Jefe');
+INSERT INTO [Roles] ([Nombre]) VALUES ('Jefe'),('Empleado');
 
 INSERT INTO [Accesos] ([Nombre]) VALUES 
 ('TiposDocumentos'),
@@ -240,6 +240,7 @@ INSERT INTO [Roles_tiene_Accesos] ([Role], [Acceso]) VALUES
 (1, 12),
 (1, 13),
 (1, 14),
-(1, 15);
+(1, 15),
+(2,9);
 
 INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('admin', '$2a$11$ER55nUgrwT5IYUQLYEJRYO69qLYJzaE4uZJNLD4NR2ojMVy2OfG7G', 1);

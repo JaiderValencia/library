@@ -66,7 +66,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                respuesta["Entidad"] = this.iRolesAplicacion!.PorId(Convert.ToInt32(datos["id"]));
+                respuesta["Entidad"] = this.iRolesAplicacion!.PorId(Convert.ToInt32(datos["id"]))!;
 
                 respuesta["Respuesta"] = "OK";
 
@@ -95,7 +95,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
                
-                respuesta["Entidades"] = this.iRolesAplicacion!.PorNombre(datos["nombre"].ToString());
+                respuesta["Entidades"] = this.iRolesAplicacion!.PorNombre(datos["nombre"].ToString()!)!;
 
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();

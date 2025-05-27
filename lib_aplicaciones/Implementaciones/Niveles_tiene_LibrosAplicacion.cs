@@ -36,7 +36,11 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Niveles_tiene_Libros> Listar()
         {
-            return this.conexion!.Niveles_tiene_Libros!.Take(20).ToList();
+            return this.conexion!.Niveles_tiene_Libros!
+                .Include(Niveles_tiene_Libros => Niveles_tiene_Libros._Nivel)
+                .Include(Niveles_tiene_Libros => Niveles_tiene_Libros._Libro)
+                .Take(20)
+                .ToList();
         }
 
         public Niveles_tiene_Libros? PorId(int Id)

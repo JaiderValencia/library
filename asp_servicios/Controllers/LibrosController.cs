@@ -71,7 +71,7 @@ namespace asp_servicios.Controllers
 
                 int id = Convert.ToInt32(datos["id"]);
 
-                respuesta["Entidad"] = this.librosAplicacion!.PorId(id);
+                respuesta["Entidad"] = this.librosAplicacion!.PorId(id)!;
 
                 respuesta["Respuesta"] = "OK";
 

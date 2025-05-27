@@ -66,7 +66,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                respuesta["Entidad"] = this.iPrestamosAplicacion!.PorId(Convert.ToInt32(datos["id"]));
+                respuesta["Entidad"] = this.iPrestamosAplicacion!.PorId(Convert.ToInt32(datos["id"]))!;
 
                 respuesta["Respuesta"] = "OK";
 
@@ -98,7 +98,7 @@ namespace asp_servicios.Controllers
                 DateTime fechaInicio;
                 if (DateTime.TryParse(datos["FechaInicio"].ToString(), out fechaInicio))
                 {
-                    respuesta["Entidades"] = this.iPrestamosAplicacion!.PorFechaInicio(fechaInicio);
+                    respuesta["Entidades"] = this.iPrestamosAplicacion!.PorFechaInicio(fechaInicio)!;
                 }
                 else
                 {

@@ -44,7 +44,7 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Niveles> Listar()
         {
-            return this.conexion!.Niveles!.Take(20).ToList();
+            return this.conexion!.Niveles!.Include(Niveles => Niveles._Estanteria).Take(20).ToList();
         }
 
         public Niveles? PorId(int Id)

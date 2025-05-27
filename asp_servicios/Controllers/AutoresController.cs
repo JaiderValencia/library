@@ -67,7 +67,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                respuesta["Entidad"] = this.iAutoresAplicacion!.PorId(Convert.ToInt32(datos["id"]));
+                respuesta["Entidad"] = this.iAutoresAplicacion!.PorId(Convert.ToInt32(datos["id"]))!;
 
                 respuesta["Respuesta"] = "OK";
 
@@ -95,8 +95,8 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-
-                respuesta["Entidades"] = this.iAutoresAplicacion!.PorNombre(datos["nombre"].ToString());
+               
+                respuesta["Entidades"] = this.iAutoresAplicacion!.PorNombre(datos["nombre"].ToString()!)!;
 
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();

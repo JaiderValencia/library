@@ -68,7 +68,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                respuesta["Entidad"] = this.EstanteriasAplicacion!.PorId(Convert.ToInt32(datos["id"]));
+                respuesta["Entidad"] = this.EstanteriasAplicacion!.PorId(Convert.ToInt32(datos["id"]))!;
 
                 respuesta["Respuesta"] = "OK";
 

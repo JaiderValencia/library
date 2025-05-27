@@ -9,6 +9,8 @@ namespace lib_presentaciones.Interfaces
 {
     public interface ITiposDocumentosPresentacion
     {
+        void ponerToken(string token);
+
         Task<TiposDocumentos?> PorId(int Id);
         Task<List<TiposDocumentos>?> PorNombre(string nombre);
         Task<List<TiposDocumentos>> Listar();

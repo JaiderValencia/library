@@ -4,6 +4,8 @@ namespace lib_presentaciones.Interfaces
 {
     public interface IEstanteriasPresentacion
     {
+        void ponerToken(string token);
+
         Task<List<Estanterias>> Listar(int pagina = 1);
 
         Task<Estanterias?> PorId(int Id);

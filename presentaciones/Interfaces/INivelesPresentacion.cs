@@ -4,6 +4,8 @@ namespace presentaciones.Interfaces
 {
     public interface INivelesPresentacion
     {
+        void ponerToken(string token);
+
         Task<Niveles?> PorId(int Id);
         Task<List<Niveles>> PorNombre(string nombre);
         Task<List<Niveles>> Listar();

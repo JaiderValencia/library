@@ -65,3 +65,5 @@ publish/
 *.dbproj.user
 *.jfm
 *.jfm.user
+/lib_dominio/Nucleo/DatosGenerales.cs
+/secretos.json

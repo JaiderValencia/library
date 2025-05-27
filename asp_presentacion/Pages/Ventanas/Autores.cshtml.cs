@@ -58,17 +58,17 @@ namespace asp_presentacion.Pages.Ventanas
 
                 if (opcion == this.opcionesBuscador["PorId"])
                 {
-                    var administradorTask = this.iPresentacion?.PorId(Convert.ToInt32(data));
-                    administradorTask!.Wait();
+                    var AutorTask = this.iPresentacion?.PorId(Convert.ToInt32(data));
+                    AutorTask!.Wait();
                 
 
-                    if (administradorTask.Result == null)
+                    if (AutorTask.Result == null)
                     {
                         this.Autores = null;
                         return;
                     }
                     
-                    this.Autores = new List<Autores> { administradorTask.Result };
+                    this.Autores = new List<Autores> { AutorTask.Result };
                 }
                 else if (opcion == this.opcionesBuscador["PorNombre"])
                 {
@@ -81,7 +81,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al buscar administradores.";
+                ViewData["Error"] = "Ocurrió un error al buscar autores.";
             }
         }
 
@@ -169,7 +169,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al cargar la vista para crear un administrador.";
+                ViewData["Error"] = "Ocurrió un error al cargar la vista para crear un autor.";
             }
         }
 
@@ -187,7 +187,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "Ocurrió un error al crear el administrador.";
+                ViewData["Error"] = "Ocurrió un error al crear el autor.";
             }
         }
     }

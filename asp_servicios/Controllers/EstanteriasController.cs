@@ -119,7 +119,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                Estanterias estanteria = JsonConversor.ConvertirAObjeto<Estanterias>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                Estanterias estanteria = JsonConversor.ConvertirAObjeto<Estanterias>(datos["Entidad"].ToString()!);
 
                 respuesta["Entidad"] = this.EstanteriasAplicacion!.Guardar(estanteria);
 
@@ -148,7 +148,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                Estanterias estanteria = JsonConversor.ConvertirAObjeto<Estanterias>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                Estanterias estanteria = JsonConversor.ConvertirAObjeto<Estanterias>(datos["Entidad"].ToString()!);
 
                 respuesta["Entidad"] = this.EstanteriasAplicacion!.Modificar(estanteria);
 

@@ -1,0 +1,95 @@
+﻿@page
+@model asp_presentacion.Pages.Ventanas.EstanteriasModel
+@{
+    ViewData["Title"] = "Estanterías";
+}
+
+@if (!string.IsNullOrEmpty(ViewData["Error"] as string))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData["Error"]
+    </div>
+}
+
+@if (Model.VentanaActual == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)
+{
+    <form method="post">
+        <button type="submit" class="btn btn-primary" asp-page-handler="VistaCrear">Crear</button>
+    </form>
+
+    <br />
+
+    <div class='d-flex flex-column'>
+        <form method="post" class="d-flex gap-3">
+            <input name='data' id="flNombre" class="cts_forms form-control"/>
+            <select name="opcion" id="flOpcion" class="cts_forms form-select">
+                @foreach (var opcion in Model.opcionesBuscador)
+                {
+                    <option value="@opcion.Value">@opcion.Key</option>
+                }
+            </select>
+            <input type="submit" value="Buscar" class="btn btn-primary" asp-page-handler="Buscar" />
+        </form>
+    </div>
+    <br />
+
+    <div class="containers_vn panel panel-default">
+        <table class="tb_data table table-striped table-bordered table-hover">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Activo</th>
+                <th class="cl_actions">Acción</th>
+            </tr>
+            @if (Model.Estanterias != null)
+            {
+                @foreach (var estanteria in Model.Estanterias)
+                {
+                    <tr>
+                        <td>@estanteria.Id</td>
+                        <td>@estanteria.Nombre</td>
+                        <td>@(estanteria.Activo ? "Sí" : "No")</td>
+                        <td>
+                            <form method="post" class='d-flex gap-3'>
+                                <input type="submit" value="Modificar" asp-page-handler="VistaModificar" class="btn btn-warning"
+                                    asp-route-data="@estanteria.Id" />
+                                <input type="submit" value="Borrar" asp-page-handler="Borrar" class="btn btn-danger"
+                                    asp-route-data="@estanteria.Id" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+}
+
+@if (Model.VentanaActual == lib_dominio.Nucleo.Enumerables.Ventanas.Editar || Model.VentanaActual == lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
+{
+    <div class="containers_vn panel panel-default">
+        <h3>Estantería: @Model.Estanteria?.Nombre</h3>
+        <form method="post">
+            <input type="hidden" asp-for="@Model.Estanteria!.Id" />
+
+            <div class="form-group mt-4">
+                <label class="col-lg-4 control-label">Nombre</label>
+                <div class="col-lg-6">
+                    <input class="cts_forms form-control" asp-for="@Model.Estanteria!.Nombre" />
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <label class="col-lg-4 control-label">Activo</label>
+                <div class="col-lg-6">
+                    <select asp-for="@Model.Estanteria!.Activo" class="form-select">
+                        <option value="true" selected="@(Model.Estanteria!.Activo ? "selected" : null)">Sí</option>
+                        <option value="false" selected="@(Model.Estanteria!.Activo ? null : "selected")">No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <input type="submit" value="Guardar" asp-page-handler=@(Model.VentanaActual == lib_dominio.Nucleo.Enumerables.Ventanas.Editar ? "Modificar" : "Crear") class="btn btn-primary" />
+                <a href="/Ventanas/Estanterias" class='btn btn-danger'>Cancelar</a>
+            </div>
+        </form>
+    </div>
+}

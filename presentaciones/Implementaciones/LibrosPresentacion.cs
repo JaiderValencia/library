@@ -70,7 +70,7 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
                 { "Bearer", token! }
             };
 
@@ -87,7 +87,7 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "entidad", JsonConversor.ConvertirAString(entidad) },
+                { "Entidad", JsonConversor.ConvertirAString(entidad) },
                 { "Bearer", token! }
             };
 

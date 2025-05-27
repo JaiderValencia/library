@@ -1,0 +1,132 @@
+﻿@page
+@model asp_presentacion.Pages.Ventanas.LibrosModel
+@{
+    ViewData["Title"] = "Libros";
+}
+
+@if (!string.IsNullOrEmpty(ViewData["Error"] as string))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData["Error"]
+    </div>
+}
+
+@if (Model.VentanaActual == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)
+{
+    <form method="post">
+        <button type="submit" class="btn btn-primary" asp-page-handler="VistaCrear">Crear</button>
+    </form>
+
+    <br />
+
+    <div class='d-flex flex-column'>
+        <form method="post" class="d-flex gap-3">
+            <input name='data' id="flNombre" class="cts_forms form-control"/>
+            <select name="opcion" id="flOpcion" class="cts_forms form-select">
+                @foreach (var opcion in Model.opcionesBuscador)
+                {
+                    <option value="@opcion.Value">@opcion.Key</option>
+                }
+            </select>
+            <input type="submit" value="Buscar" class="btn btn-primary" asp-page-handler="Buscar" />
+        </form>
+    </div>
+    <br />
+
+    <div class="containers_vn panel panel-default">
+        <table class="tb_data table table-striped table-bordered table-hover">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Categoría</th>
+                <th>Autor</th>
+                <th class="cl_actions">Acción</th>
+            </tr>
+            @if (Model.Libros != null)
+            {
+                @foreach (var libro in Model.Libros)
+                {
+                    <tr>
+                        <td>@libro.Id</td>
+                        <td>@libro.Nombre</td>
+                        <td>@libro.Fecha.ToShortDateString()</td>
+                        <td>@libro._Categoria?.Nombre</td>
+                        <td>@libro._Autor?.Nombre</td>
+                        <td>
+                            <form method="post" class='d-flex gap-3'>
+                                <input type="submit" value="Modificar" asp-page-handler="VistaModificar" class="btn btn-warning"
+                                    asp-route-data="@libro.Id" />
+                                <input type="submit" value="Borrar" asp-page-handler="Borrar" class="btn btn-danger"
+                                    asp-route-data="@libro.Id" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+}
+
+@if (Model.VentanaActual == lib_dominio.Nucleo.Enumerables.Ventanas.Editar || Model.VentanaActual == lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
+{
+    <div class="containers_vn panel panel-default">
+        <h3>Libro: @Model.Libro?.Nombre</h3>
+        <form method="post">
+            <input type="hidden" asp-for="@Model.Libro!.Id" />
+
+            <div class="form-group mt-4">
+                <label class="col-lg-4 control-label">Nombre</label>
+                <div class="col-lg-6">
+                    <input class="cts_forms form-control" asp-for="@Model.Libro!.Nombre" />
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <label class="col-lg-4 control-label">Fecha</label>
+                <div class="col-lg-6">
+                    <input type="date" class="cts_forms form-control" asp-for="@Model.Libro!.Fecha" />
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <label class="col-lg-4 control-label">Categoría</label>
+                <div class="col-lg-6">
+                    <select asp-for="@Model.Libro!.Categoria" class="form-select">
+                        @if (Model.Categorias == null || Model.Categorias.Count == 0)
+                        {
+                            <option value="">No hay categorías disponibles</option>
+                        }
+                        else
+                        {
+                            @foreach (var categoria in Model.Categorias)
+                            {
+                                <option value="@categoria.Id">@categoria.Nombre</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <label class="col-lg-4 control-label">Autor</label>
+                <div class="col-lg-6">
+                    <select asp-for="@Model.Libro!.Autor" class="form-select">
+                        @if (Model.Autores == null || Model.Autores.Count == 0)
+                        {
+                            <option value="">No hay autores disponibles</option>
+                        }
+                        else
+                        {
+                            @foreach (var autor in Model.Autores)
+                            {
+                                <option value="@autor.Id">@autor.Nombre</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group mt-4">
+                <input type="submit" value="Guardar" asp-page-handler=@(Model.VentanaActual == lib_dominio.Nucleo.Enumerables.Ventanas.Editar ? "Modificar" : "Crear") class="btn btn-primary" />
+                <a href="/Ventanas/Libros" class='btn btn-danger'>Cancelar</a>
+            </div>
+        </form>
+    </div>
+}

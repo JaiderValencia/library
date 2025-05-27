@@ -35,7 +35,8 @@ namespace lib_presentaciones.Implementaciones
         {
             var datos = new Dictionary<string, object>
             {
-                { "id", Id }
+                { "id", Id },
+                { "Bearer", token! }
             };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Autores/PorId");
@@ -65,7 +66,7 @@ namespace lib_presentaciones.Implementaciones
             return JsonConversor.ConvertirAObjeto<List<Autores>>(JsonConversor.ConvertirAString(respuesta["Entidades"]));
         }
 
-        public async Task<Autores?> Guardar(Autores? entidad)
+        public async Task<Autores?> Guardar(Autores entidad)
 
         {
             if (entidad == null)
@@ -86,11 +87,8 @@ namespace lib_presentaciones.Implementaciones
             return JsonConversor.ConvertirAObjeto<Autores>(JsonConversor.ConvertirAString(respuesta["Entidad"]));
         }
 
-        public async Task<Autores?> Modificar(Autores? entidad)
+        public async Task<Autores?> Modificar(Autores entidad)
         {
-            if (entidad == null)
-                throw new ArgumentNullException(nameof(entidad));
-
             var datos = new Dictionary<string, object>
             {
                 { "Entidad", JsonConversor.ConvertirAString(entidad) },

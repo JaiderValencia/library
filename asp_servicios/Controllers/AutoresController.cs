@@ -120,7 +120,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var entidad = JsonConversor.ConvertirAObjeto<Autores>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var entidad = JsonConversor.ConvertirAObjeto<Autores>(datos["Entidad"].ToString()!);
 
                 entidad = this.iAutoresAplicacion!.Guardar(entidad);
 
@@ -149,7 +149,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var entidad = JsonConversor.ConvertirAObjeto<Autores>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var entidad = JsonConversor.ConvertirAObjeto<Autores>(datos["Entidad"].ToString()!);
 
                 entidad = this.iAutoresAplicacion!.Modificar(entidad);
 

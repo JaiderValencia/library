@@ -21,12 +21,18 @@ namespace lib_aplicaciones.Implementaciones
 
         public Libros? PorId(int Id)
         {
-            return this.conexion.Libros!.FirstOrDefault(libro => libro.Id == Id);
+            return this.conexion.Libros!
+            .Include(Libro => Libro._Autor)
+            .Include(Libro => Libro._Categoria)
+            .FirstOrDefault(libro => libro.Id == Id);
         }
 
         public List<Libros> PorNombre(string nombre)
         {
-            return this.conexion.Libros!.Where(libro => libro.Nombre!.Contains(nombre)).ToList();
+            return this.conexion.Libros!
+            .Include(Libro => Libro._Autor)
+            .Include(Libro => Libro._Categoria)
+            .Where(libro => libro.Nombre!.Contains(nombre)).ToList();
         }
 
         public Libros Guardar(Libros entidad)
@@ -64,7 +70,7 @@ namespace lib_aplicaciones.Implementaciones
 
             if (entidad == null)
                 throw new Exception("No existe esta libro");
-            
+
             this.conexion.Libros!.Remove(entidad);
             this.conexion.SaveChanges();
 

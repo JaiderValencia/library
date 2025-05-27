@@ -126,7 +126,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var libro = JsonConversor.ConvertirAObjeto<Libros>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var libro = JsonConversor.ConvertirAObjeto<Libros>(datos["Entidad"].ToString()!);
 
                 respuesta["Entidad"] = this.librosAplicacion!.Guardar(libro);
 
@@ -155,7 +155,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var libro = JsonConversor.ConvertirAObjeto<Libros>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var libro = JsonConversor.ConvertirAObjeto<Libros>(datos["Entidad"].ToString()!);
 
                 respuesta["Entidad"] = this.librosAplicacion!.Modificar(libro);
 

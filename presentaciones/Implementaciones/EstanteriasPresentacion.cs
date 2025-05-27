@@ -57,7 +57,7 @@ namespace lib_presentaciones.Implementaciones
 
         public async Task<Estanterias> Guardar(Estanterias entidad)
         {
-            var datos = new Dictionary<string, object> { { "entidad", JsonConversor.ConvertirAString(entidad) }, { "Bearer", token! } };
+            var datos = new Dictionary<string, object> { { "Entidad", JsonConversor.ConvertirAString(entidad) }, { "Bearer", token! } };
             datos = Comunicaciones.ConstruirUrl(datos, "Estanterias/Guardar");
             var respuesta = await Comunicaciones.Execute(datos);
 
@@ -69,7 +69,7 @@ namespace lib_presentaciones.Implementaciones
 
         public async Task<Estanterias> Modificar(Estanterias entidad)
         {
-            var datos = new Dictionary<string, object> { { "entidad", JsonConversor.ConvertirAString(entidad) }, { "Bearer", token! } };
+            var datos = new Dictionary<string, object> { { "Entidad", JsonConversor.ConvertirAString(entidad) }, { "Bearer", token! } };
 
             datos = Comunicaciones.ConstruirUrl(datos, "Estanterias/Modificar");
             var respuesta = await Comunicaciones.Execute(datos);

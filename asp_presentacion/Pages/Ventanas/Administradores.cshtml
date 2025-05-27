@@ -19,7 +19,20 @@
 
     <br />
 
-    <input id="flNombre" class="cts_forms form-control" placeholder="Nombre" />
+    <div class='d-flex flex-column'>
+        <form method="post" class="d-flex gap-3">
+            <input name='data' id="flNombre" class="cts_forms form-control" placeholder="Nombre" />
+            <select name="opcion" id="flOpcion" class="cts_forms form-select">
+                @foreach (var opcion in Model.opcionesBuscador)
+                {
+                    <option value="@opcion.Value">@opcion.Key</option>
+                }
+            </select>
+
+            <input type="submit" value="Buscar" class="btn btn-primary" asp-page-handler="Buscar" />
+        </form>
+
+    </div>
     <br />
 
     <div class="containers_vn panel panel-default">

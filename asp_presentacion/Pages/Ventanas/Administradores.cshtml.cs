@@ -18,6 +18,12 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public Administradores? Administrador { get; set; } = null;
         public Enumerables.Ventanas VentanaActual { get; set; } = Enumerables.Ventanas.Listas;
 
+        public Dictionary<string, int> opcionesBuscador { get; } = new Dictionary<string, int>
+        {
+            { "PorId", 1 },
+            { "PorNombre", 2 },            
+        };
+
         public AdministradoresModel(IAdministradoresPresentacion? administradoresPresentacion, IRolesPresentacion? rolesPresentacion)
         {
             this.iPresentacion = administradoresPresentacion;
@@ -45,6 +51,42 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 OnPostListar();
                 return;
+            }
+        }
+
+        public void OnPostBuscar(string data, int opcion)
+        {
+            try
+            {
+                comprobarToken();
+                VentanaActual = Enumerables.Ventanas.Listas;
+
+                if (opcion == this.opcionesBuscador["PorId"])
+                {
+                    var administradorTask = this.iPresentacion?.PorId(Convert.ToInt32(data));
+                    administradorTask!.Wait();
+                
+
+                    if (administradorTask.Result == null)
+                    {
+                        this.Administradores = null;
+                        return;
+                    }
+                    
+                    this.Administradores = new List<Administradores> { administradorTask.Result };
+                }
+                else if (opcion == this.opcionesBuscador["PorNombre"])
+                {
+                    var administradoresTask = this.iPresentacion?.PorNombre(data);
+                    administradoresTask!.Wait();
+
+                    this.Administradores = administradoresTask.Result!;
+                }                
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+                ViewData["Error"] = "Ocurrió un error al buscar administradores.";
             }
         }
 

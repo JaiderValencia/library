@@ -36,7 +36,7 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                if (!tokenController!.Validate(datos))
+                if (!tokenController!.Validate(datos, Request.Path.Value!))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
@@ -62,7 +62,7 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                if (!tokenController!.Validate(datos))
+                if (!tokenController!.Validate(datos, Request.Path.Value!))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
@@ -91,7 +91,7 @@ namespace asp_servicios.Controllers
             {
                 var datos = ObtenerDatos();
 
-                if (!tokenController!.Validate(datos))
+                if (!tokenController!.Validate(datos, Request.Path.Value!))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
@@ -117,7 +117,7 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                if (!tokenController!.Validate(datos))
+                if (!tokenController!.Validate(datos, Request.Path.Value!))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
@@ -148,7 +148,7 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                if (!tokenController!.Validate(datos))
+                if (!tokenController!.Validate(datos, Request.Path.Value!))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
@@ -186,7 +186,7 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                if (!tokenController!.Validate(datos))
+                if (!tokenController!.Validate(datos, Request.Path.Value!))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);

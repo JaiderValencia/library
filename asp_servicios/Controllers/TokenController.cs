@@ -7,6 +7,7 @@ using System.Text;
 using lib_dominio.Nucleo;
 using lib_aplicaciones.Interfaces;
 using Bcrypt = BCrypt.Net.BCrypt;
+using lib_dominio.Entidades;
 
 
 
@@ -16,13 +17,15 @@ namespace asp_servicios.Controllers
     {
         private readonly IAdministradoresAplicacion administradoresAplicacion;
         private readonly IAccesosAplicacion? accesosAplicacion;
+        private readonly IAuditoriasAplicacion? auditoriasAplicacion;
 
         private int? AccesoId { get; set; }
 
-        public TokenController(IAdministradoresAplicacion administradoresAplicacion, IAccesosAplicacion accesosAplicacion)
+        public TokenController(IAdministradoresAplicacion administradoresAplicacion, IAccesosAplicacion accesosAplicacion, IAuditoriasAplicacion? auditoriasAplicacion = null)
         {
             this.administradoresAplicacion = administradoresAplicacion;
-            this.accesosAplicacion = accesosAplicacion;            
+            this.accesosAplicacion = accesosAplicacion;
+            this.auditoriasAplicacion = auditoriasAplicacion;
         }
 
         public void ponerAccesoId(int? accesoId)
@@ -65,7 +68,7 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lb Falta usuario o contraseña";
                     return JsonConversor.ConvertirAString(respuesta);
                 }
-                
+
                 var administrador = administradoresAplicacion.ObtenerUnoNombre(nombre);
 
                 if (administrador == null || !Bcrypt.Verify(password, administrador!.Password))
@@ -98,7 +101,7 @@ namespace asp_servicios.Controllers
             }
         }
 
-        public bool Validate(Dictionary<string, object> data)
+        public bool Validate(Dictionary<string, object> data, string ruta)
         {
             try
             {
@@ -121,10 +124,23 @@ namespace asp_servicios.Controllers
 
                 bool validarAcceso = this.accesosAplicacion!.validarAcceso(administradorId, AccesoId ?? 0);
 
+                if (validarTiempo && validarId && validarAcceso && !ruta.ToLower().Contains("auditorias"))
+                {
+                    string Administrador = this.administradoresAplicacion.PorId(administradorId)!.Nombre!;
+
+                    this.auditoriasAplicacion?.Guardar(new Auditorias
+                    {
+                        Administrador = Administrador,
+                        Accion = ruta,
+                        Fecha = DateTime.Now
+                    });
+                }
+
                 return validarTiempo && validarId && validarAcceso;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error validating token: {ex.Message}");
                 return false;
             }
         }

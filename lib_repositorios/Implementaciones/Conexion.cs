@@ -20,6 +20,7 @@ namespace lib_repositorios.Implementaciones
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
+        public DbSet<Auditorias>? Auditorias { get; set; }
         public DbSet<Autores>? Autores { get; set; }
         public DbSet<Categorias>? Categorias { get; set; }
         public DbSet<Clientes>? Clientes { get; set; }

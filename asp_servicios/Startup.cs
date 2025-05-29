@@ -28,6 +28,7 @@ namespace asp_servicios
             services.AddScoped<IConexion, Conexion>();
 
             // Aplicaciones
+            services.AddScoped<IAuditoriasAplicacion, AuditoriasAplicacion>();
             services.AddScoped<IAutoresAplicacion, AutoresAplicacion>();
             services.AddScoped<ICategoriasAplicacion, CategoriasAplicacion>();
             services.AddScoped<IClientesAplicaciones, ClientesAplicacion>();

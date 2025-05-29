@@ -54,6 +54,31 @@ namespace asp_servicios.Controllers
             }
         }
 
+        public string DisponiblePrestar()
+        {
+            var respuesta = new Dictionary<string, object>();
+            try
+            {
+                var datos = ObtenerDatos();
+                if (!tokenController!.Validate(datos, Request.Path.Value!))
+                {
+                    respuesta["Error"] = "lbNoAutenticacion";
+                    return JsonConversor.ConvertirAString(respuesta);
+                }
+
+                respuesta["Entidades"] = this.iNumerosDeSerieAplicacion!.DisponiblePrestar()!;
+
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
+                return JsonConversor.ConvertirAString(respuesta);
+            }
+            catch (Exception ex)
+            {
+                respuesta["Error"] = ex.Message.ToString();
+                return JsonConversor.ConvertirAString(respuesta);
+            }
+        }
+
         [HttpPost]
         public string PorId() { 
             var respuesta = new Dictionary<string, object>();

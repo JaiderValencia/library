@@ -7,6 +7,8 @@ namespace lib_aplicaciones.Interfaces
     {       
         NumerosDeSerie? PorId(int Id);
         List<NumerosDeSerie>? PorNumeroSerie(string NumeroSerie);
+
+        List<NumerosDeSerie>? DisponiblePrestar();
         List<NumerosDeSerie> Listar();
         NumerosDeSerie? Guardar(NumerosDeSerie? entidad);
         NumerosDeSerie? Modificar(NumerosDeSerie? entidad);

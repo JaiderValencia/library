@@ -2,10 +2,11 @@
 using lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace lib_aplicaciones.Implementaciones
 {
-    public class NumerosDeSerieAplicacion: INumerosDeSerieAplicacion
+    public class NumerosDeSerieAplicacion : INumerosDeSerieAplicacion
     {
         private Conexion conexion = new Conexion();
 
@@ -17,6 +18,14 @@ namespace lib_aplicaciones.Implementaciones
                 .ToList();
         }
 
+        public List<NumerosDeSerie>? DisponiblePrestar()
+        {            
+            return this.conexion!.NumerosDeSerie!.
+                Include(NumeroSerie => NumeroSerie._Libro)
+                .Where(x => this.conexion!.Prestamos!.OrderByDescending(p => p.Id).FirstOrDefault(p => p.NumeroSerie == x.Id) == null || this.conexion!.Prestamos!.OrderByDescending(p => p.Id).FirstOrDefault(p => p.NumeroSerie == x.Id)!.FechaEntregado != null)
+                .ToList();
+        }
+        
         public NumerosDeSerie? Borrar(int id)
         {
             var entidad = this.conexion.NumerosDeSerie!.FirstOrDefault(NumerosDeSerie => NumerosDeSerie.Id == id);
@@ -49,7 +58,7 @@ namespace lib_aplicaciones.Implementaciones
 
         public NumerosDeSerie? PorId(int Id)
         {
-            return this.conexion!.NumerosDeSerie!.FirstOrDefault(x => x.Id==Id);
+            return this.conexion!.NumerosDeSerie!.FirstOrDefault(x => x.Id == Id);
         }
 
         public NumerosDeSerie? Modificar(NumerosDeSerie? entidad)

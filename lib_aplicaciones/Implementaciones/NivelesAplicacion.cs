@@ -11,10 +11,18 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Niveles>? PorNombre(string nombre)
         {
-            return this.conexion!.Niveles!
+            var niveles = this.conexion!.Niveles!
                 .Include(Niveles => Niveles._Estanteria)
                 .Where(x => x.Nombre!.Contains(nombre))
+                .OrderBy(n => n.Estanteria)
                 .ToList();
+
+            foreach (var nivel in niveles)
+            {
+                nivel.CantidadLibros = this.conexion!.Niveles_tiene_Libros!.Count(x => x.Nivel == nivel.Id);
+            }
+
+            return niveles;
         }
 
         public Niveles? Borrar(int id)
@@ -44,12 +52,30 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Niveles> Listar()
         {
-            return this.conexion!.Niveles!.Include(Niveles => Niveles._Estanteria).Take(20).ToList();
+            var niveles = this.conexion!.Niveles!
+            .Include(Niveles => Niveles._Estanteria)
+            .OrderBy(n => n.Estanteria)
+            .Take(20)
+            .ToList();
+
+            foreach (var nivel in niveles)
+            {
+                nivel.CantidadLibros = this.conexion!.Niveles_tiene_Libros!.Count(x => x.Nivel == nivel.Id);
+            }
+
+            return niveles;
         }
 
         public Niveles? PorId(int Id)
         {
-            return this.conexion!.Niveles!.FirstOrDefault(x => x.Id == Id);
+            var nivel = this.conexion!.Niveles!.FirstOrDefault(x => x.Id == Id);
+
+            if (nivel == null)
+                throw new Exception("lbNoSeEncontro");
+
+            nivel.CantidadLibros = this.conexion!.Niveles_tiene_Libros!.Count(x => x.Nivel == nivel.Id);
+
+            return nivel;
         }
 
         public Niveles? Modificar(Niveles? entidad)

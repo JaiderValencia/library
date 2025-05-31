@@ -12,9 +12,11 @@ namespace asp_presentacion.Pages.Ventanas
     {
         private readonly INivelesPresentacion? iPresentacion;
         private readonly IEstanteriasPresentacion? EstanteriasPresentacion;
+        private readonly ILibrosPresentacion? LibrosPresentacion;
 
         public List<Niveles>? Niveles { get; set; }
         public List<Estanterias>? Estanterias { get; set; }
+        public List<Libros>? Libros { get; set; }
 
         [BindProperty] public Niveles? Nivel { get; set; } = null;
         public Enumerables.Ventanas VentanaActual { get; set; } = Enumerables.Ventanas.Listas;
@@ -25,8 +27,9 @@ namespace asp_presentacion.Pages.Ventanas
             { "PorNombre", 2 },
         };
 
-        public NivelesModel(INivelesPresentacion? NivelesPresentacion, IEstanteriasPresentacion? EstanteriasPresentacion)
+        public NivelesModel(INivelesPresentacion? NivelesPresentacion, IEstanteriasPresentacion? EstanteriasPresentacion, ILibrosPresentacion? LibrosPresentacion)
         {
+            this.LibrosPresentacion = LibrosPresentacion;
             this.iPresentacion = NivelesPresentacion;
             this.EstanteriasPresentacion = EstanteriasPresentacion;
         }
@@ -43,6 +46,7 @@ namespace asp_presentacion.Pages.Ventanas
 
             this.iPresentacion?.ponerToken(token);
             this.EstanteriasPresentacion?.ponerToken(token);
+            this.LibrosPresentacion?.ponerToken(token);
         }
 
         public void OnGet()
@@ -87,7 +91,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "OcurriÛ un error al buscar Niveles.";
+                ViewData["Error"] = "Ocurri√≥ un error al buscar Niveles.";
             }
         }
 
@@ -104,7 +108,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "OcurriÛ un error al cargar los Niveles.";
+                ViewData["Error"] = "Ocurri√≥ un error al cargar los Niveles.";
             }
         }
 
@@ -122,7 +126,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "OcurriÛ un error al borrar el Nivel.";
+                ViewData["Error"] = "Ocurri√≥ un error al borrar el Nivel.";
             }
         }
 
@@ -137,14 +141,31 @@ namespace asp_presentacion.Pages.Ventanas
                 NivelTask!.Wait();
 
                 obtenerEstanterias();
+                obtenerLibros();
 
                 this.Nivel = NivelTask.Result;
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "OcurriÛ un error al cargar el Nivel para editar.";
+                ViewData["Error"] = "Ocurri√≥ un error al cargar el Nivel para editar.";
             }
+        }
+
+        public void obtenerLibros()
+        {
+            try
+            {                
+                var LibrosTask = this.LibrosPresentacion?.Listar(1);
+                LibrosTask!.Wait();
+
+                this.Libros = LibrosTask.Result;
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+                ViewData["Error"] = "Ocurri√≥ un error al cargar los Libros.";
+            }            
         }
 
         public void obtenerEstanterias()
@@ -159,7 +180,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "OcurriÛ un error al cargar los Estanterias para editar.";
+                ViewData["Error"] = "Ocurri√≥ un error al cargar los Estanterias para editar.";
             }
         }
 
@@ -178,7 +199,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "OcurriÛ un error al cargar el Nivel para editar.";
+                ViewData["Error"] = "Ocurri√≥ un error al cargar el Nivel para editar.";
             }
         }
 
@@ -189,13 +210,14 @@ namespace asp_presentacion.Pages.Ventanas
                 this.VentanaActual = Enumerables.Ventanas.Crear;
                 comprobarToken();
                 obtenerEstanterias();
+                obtenerLibros();
 
                 this.Nivel = new Niveles();
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "OcurriÛ un error al cargar la vista para crear un Nivel.";
+                ViewData["Error"] = "Ocurri√≥ un error al cargar la vista para crear un Nivel.";
             }
         }
 
@@ -213,7 +235,7 @@ namespace asp_presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
-                ViewData["Error"] = "OcurriÛ un error al crear el Nivel.";
+                ViewData["Error"] = "Ocurri√≥ un error al crear el Nivel.";
             }
         }
     }

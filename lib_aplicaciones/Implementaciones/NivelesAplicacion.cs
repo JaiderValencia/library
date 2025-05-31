@@ -37,6 +37,22 @@ namespace lib_aplicaciones.Implementaciones
             return entidad;
         }
 
+        private void guardarLibroEnNivel(List<int> libros, int nivelId)
+        {
+            foreach (var libroId in libros)
+            {
+                var nivelTieneLibro = new Niveles_tiene_Libros
+                {
+                    Libro = libroId,
+                    Nivel = nivelId
+                };
+
+                this.conexion.Niveles_tiene_Libros!.Add(nivelTieneLibro);
+            }
+
+            this.conexion.SaveChanges();
+        }
+
         public Niveles? Guardar(Niveles? entidad)
         {
             if (entidad == null)
@@ -47,6 +63,10 @@ namespace lib_aplicaciones.Implementaciones
 
             this.conexion!.Niveles!.Add(entidad);
             this.conexion.SaveChanges();
+
+            if (entidad.Libros != null && entidad.Libros.Count() != 0)
+                this.guardarLibroEnNivel(entidad.Libros!, entidad.Id);
+
             return entidad;
         }
 
@@ -75,6 +95,11 @@ namespace lib_aplicaciones.Implementaciones
 
             nivel.CantidadLibros = this.conexion!.Niveles_tiene_Libros!.Count(x => x.Nivel == nivel.Id);
 
+            nivel.Libros = this.conexion!.Niveles_tiene_Libros!
+                .Where(x => x.Nivel == nivel.Id)
+                .Select(x => x.Libro)
+                .ToList();
+
             return nivel;
         }
 
@@ -89,6 +114,10 @@ namespace lib_aplicaciones.Implementaciones
             var entry = this.conexion!.Entry<Niveles>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
+
+            if (entidad.Libros != null && entidad.Libros.Count() != 0)
+                this.guardarLibroEnNivel(entidad.Libros!, entidad.Id);
+
             return entidad;
         }
     }

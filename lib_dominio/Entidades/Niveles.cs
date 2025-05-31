@@ -9,6 +9,9 @@ namespace lib_dominio.Entidades
         public int Estanteria { get; set; }
 
         [NotMapped] public int CantidadLibros { get; set; }
+
+        [NotMapped] public List<int>? Libros { get; set; }
+
         [ForeignKey("Estanteria")] public Estanterias? _Estanteria { get; set; }
     }
 }

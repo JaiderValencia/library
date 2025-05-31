@@ -47,6 +47,10 @@
                 <th>
                     Libro
                 </th>
+                <th>Estanteria</th>
+                <th>
+                    Nivel
+                </th>
                 <th class="cl_actions">
                     Accion
                 </th>
@@ -64,6 +68,12 @@
                         </td>
                         <td>
                             @NumeroDeSerie._Libro?.Nombre
+                        </td>
+                        <td>
+                            @NumeroDeSerie.estanterias
+                        </td>
+                        <td>
+                            @NumeroDeSerie.niveles
                         </td>
                         <td>
                             <form method="post" class='d-flex gap-3'>

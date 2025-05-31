@@ -41,6 +41,8 @@
                 <th>Fecha</th>
                 <th>Categoría</th>
                 <th>Autor</th>
+                <th>Estanterias</th>
+                <th>Niveles</th>
                 <th class="cl_actions">Acción</th>
             </tr>
             @if (Model.Libros != null)
@@ -53,6 +55,8 @@
                         <td>@libro.Fecha.ToShortDateString()</td>
                         <td>@libro._Categoria?.Nombre</td>
                         <td>@libro._Autor?.Nombre</td>
+                        <td>@libro.estanterias</td>
+                        <td>@libro.niveles</td>
                         <td>
                             <form method="post" class='d-flex gap-3'>
                                 <input type="submit" value="Modificar" asp-page-handler="VistaModificar" class="btn btn-warning"

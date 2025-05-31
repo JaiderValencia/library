@@ -11,28 +11,76 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Libros> Listar(int pagina = 1, int tamañoPagina = 20)
         {
-            return this.conexion.Libros!
+            var libros = this.conexion.Libros!
             .Skip((pagina - 1) * tamañoPagina)
             .Take(tamañoPagina)
             .Include(libro => libro._Autor)
             .Include(libro => libro._Categoria)
             .ToList();
+
+            libros.ForEach(libro =>
+            {
+                var nivel_tiene_libros = this.conexion.Niveles_tiene_Libros!
+                    .Include(n => n._Nivel!._Estanteria)
+                    .Where(n => n.Libro == libro.Id)
+                    .ToList();
+
+                libro.estanterias = string.Join(", ", nivel_tiene_libros
+                    .Select(n => n._Nivel!._Estanteria!.Nombre));
+
+                libro.niveles = string.Join(", ", nivel_tiene_libros
+                    .Select(n => n._Nivel!.Nombre));
+            });
+
+            return libros;
         }
 
         public Libros? PorId(int Id)
         {
-            return this.conexion.Libros!
+            var libro = this.conexion.Libros!
             .Include(Libro => Libro._Autor)
             .Include(Libro => Libro._Categoria)
             .FirstOrDefault(libro => libro.Id == Id);
+
+            if (libro == null)
+                throw new Exception("No existe este libro");
+
+            var nivel_tiene_libros = this.conexion.Niveles_tiene_Libros!
+                    .Include(n => n._Nivel!._Estanteria)
+                    .Where(n => n.Libro == libro.Id)
+                    .ToList();
+
+            libro.niveles = string.Join(", ", nivel_tiene_libros.
+                Select(n => n._Nivel!.Nombre));
+
+            libro.estanterias = string.Join(", ", nivel_tiene_libros.
+                Select(n => n._Nivel!._Estanteria!.Nombre));
+
+            return libro;
         }
 
         public List<Libros> PorNombre(string nombre)
         {
-            return this.conexion.Libros!
+            var libros = this.conexion.Libros!
             .Include(Libro => Libro._Autor)
             .Include(Libro => Libro._Categoria)
             .Where(libro => libro.Nombre!.Contains(nombre)).ToList();
+
+            libros.ForEach(libro =>
+            {
+                var nivel_tiene_libros = this.conexion.Niveles_tiene_Libros!
+                    .Include(n => n._Nivel!._Estanteria)
+                    .Where(n => n.Libro == libro.Id)
+                    .ToList();
+
+                libro.estanterias = string.Join(", ", nivel_tiene_libros
+                    .Select(n => n._Nivel!._Estanteria!.Nombre));
+
+                libro.niveles = string.Join(", ", nivel_tiene_libros
+                    .Select(n => n._Nivel!.Nombre));
+            });
+
+            return libros;
         }
 
         public Libros Guardar(Libros entidad)

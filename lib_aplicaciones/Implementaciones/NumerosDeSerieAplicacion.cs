@@ -12,20 +12,34 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<NumerosDeSerie>? PorNumeroSerie(string NumeroSerie)
         {
-            return this.conexion!.NumerosDeSerie!
+
+            var numerosSerie = this.conexion!.NumerosDeSerie!
                 .Include(NumeroSerie => NumeroSerie._Libro)
                 .Where(x => x.NumeroSerie!.Contains(NumeroSerie))
                 .ToList();
+
+            numerosSerie.ForEach(x =>
+            {
+                var nivel_tiene_libros = this.conexion!.Niveles_tiene_Libros!.Include(n => n._Nivel!._Estanteria).Where(n => n.Libro == x._Libro!.Id).ToList();
+
+                x.niveles = string.Join(", ", nivel_tiene_libros.
+                    Select(n => n._Nivel!.Nombre));
+
+                x.estanterias = string.Join(", ", nivel_tiene_libros.
+                    Select(n => n._Nivel!._Estanteria!.Nombre));
+            });
+
+            return numerosSerie;
         }
 
         public List<NumerosDeSerie>? DisponiblePrestar()
-        {            
+        {
             return this.conexion!.NumerosDeSerie!.
                 Include(NumeroSerie => NumeroSerie._Libro)
                 .Where(x => this.conexion!.Prestamos!.OrderByDescending(p => p.Id).FirstOrDefault(p => p.NumeroSerie == x.Id) == null || this.conexion!.Prestamos!.OrderByDescending(p => p.Id).FirstOrDefault(p => p.NumeroSerie == x.Id)!.FechaEntregado != null)
                 .ToList();
         }
-        
+
         public NumerosDeSerie? Borrar(int id)
         {
             var entidad = this.conexion.NumerosDeSerie!.FirstOrDefault(NumerosDeSerie => NumerosDeSerie.Id == id);
@@ -53,12 +67,38 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<NumerosDeSerie> Listar()
         {
-            return this.conexion!.NumerosDeSerie!.Include(NumeroSerie => NumeroSerie._Libro).Take(20).ToList();
+            var numerosSerie = this.conexion!.NumerosDeSerie!.Include(NumeroSerie => NumeroSerie._Libro).Take(20).ToList();
+
+            numerosSerie.ForEach(x =>
+            {
+                var nivel_tiene_libros = this.conexion!.Niveles_tiene_Libros!.Include(n => n._Nivel!._Estanteria).Where(n => n.Libro == x._Libro!.Id).ToList();
+
+                x.niveles = string.Join(", ", nivel_tiene_libros.
+                    Select(n => n._Nivel!.Nombre));
+
+                x.estanterias = string.Join(", ", nivel_tiene_libros.
+                    Select(n => n._Nivel!._Estanteria!.Nombre));
+            });
+
+            return numerosSerie;
         }
 
         public NumerosDeSerie? PorId(int Id)
         {
-            return this.conexion!.NumerosDeSerie!.FirstOrDefault(x => x.Id == Id);
+            var numeroSerie = this.conexion!.NumerosDeSerie!.Include(n=> n._Libro).FirstOrDefault(x => x.Id == Id);
+
+            if (numeroSerie == null)
+                return null;
+
+            var nivel_tiene_libros = this.conexion!.Niveles_tiene_Libros!.Include(n => n._Nivel!._Estanteria).Where(n => n.Libro == numeroSerie._Libro!.Id).ToList();
+
+            numeroSerie.niveles = string.Join(", ", nivel_tiene_libros.
+                Select(n => n._Nivel!.Nombre));
+
+            numeroSerie.estanterias = string.Join(", ", nivel_tiene_libros.
+                Select(n => n._Nivel!._Estanteria!.Nombre));
+
+            return numeroSerie;
         }
 
         public NumerosDeSerie? Modificar(NumerosDeSerie? entidad)

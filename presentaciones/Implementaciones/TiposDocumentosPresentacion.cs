@@ -46,7 +46,7 @@ namespace lib_presentaciones.Implementaciones
             };
 
             comunicaciones = new Comunicaciones();
-            datos = comunicaciones.ConstruirUrl(datos, "Niveles/PorNombre");
+            datos = comunicaciones.ConstruirUrl(datos, "TiposDocumentos/PorNombre");
             var respuesta = await comunicaciones!.Execute(datos);
 
             if (respuesta.ContainsKey("Error"))

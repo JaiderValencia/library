@@ -23,8 +23,8 @@ CREATE TABLE [Accesos](
 
 CREATE TABLE Roles_tiene_Accesos(
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
-	[Role] INT NOT NULL REFERENCES Roles(Id),
-	[Acceso] INT NOT NULL REFERENCES Accesos(Id)
+	[Role] INT NOT NULL REFERENCES Roles(Id) ON DELETE CASCADE,
+	[Acceso] INT NOT NULL REFERENCES Accesos(Id) ON DELETE CASCADE
 );
 
 CREATE TABLE [Auditorias](
@@ -76,7 +76,7 @@ CREATE TABLE [NumerosDeSerie](
 CREATE TABLE [Niveles_tiene_Libros](
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
 	[Nivel] INT REFERENCES [Niveles]([Id]),
-	[Libro] INT REFERENCES [Libros]([Id])
+	[Libro] INT REFERENCES [Libros]([Id]) ON DELETE CASCADE
 	);
 
 CREATE TABLE [TiposDocumentos](

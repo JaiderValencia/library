@@ -36,6 +36,13 @@ namespace asp_presentacion.Pages
             MensajeAlerta = null;
         }
 
+        public void OnGetCerrarSesion()
+        {
+            HttpContext.Session.Remove("Token");
+            EstaLogueado = false;
+            ViewData["Logged"] = false;
+        }
+
         public void OnGet()
         {
             var variable_session = HttpContext.Session.GetString("Token");

@@ -195,6 +195,7 @@ namespace asp_presentacion.Pages.Ventanas
                 this.VentanaActual = Enumerables.Ventanas.Editar;
                 this.Nivel = modificarTask.Result;
                 obtenerEstanterias();
+                obtenerLibros();
             }
             catch (Exception ex)
             {

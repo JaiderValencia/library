@@ -243,3 +243,12 @@ INSERT INTO [Roles_tiene_Accesos] ([Role], [Acceso]) VALUES
 (1, 15);
 
 INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('admin', '$2a$11$ER55nUgrwT5IYUQLYEJRYO69qLYJzaE4uZJNLD4NR2ojMVy2OfG7G', 1);
+
+INSERT INTO Roles (Nombre) VALUES ('Invitado');
+
+DECLARE @rolInvitado INT = (SELECT Id FROM Roles WHERE Nombre = 'Invitado');
+DECLARE @accesoLibros INT = (SELECT Id FROM Accesos WHERE Nombre = 'Libros');
+
+INSERT INTO Roles_tiene_Accesos (Role, Acceso) VALUES (@rolInvitado, @accesoLibros);
+
+INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('Invitado', 'ContraseñaInvitado', 2);

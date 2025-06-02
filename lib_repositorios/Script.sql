@@ -251,4 +251,4 @@ DECLARE @accesoLibros INT = (SELECT Id FROM Accesos WHERE Nombre = 'Libros');
 
 INSERT INTO Roles_tiene_Accesos (Role, Acceso) VALUES (@rolInvitado, @accesoLibros);
 
-INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('Invitado', 'ContraseñaInvitado', 2);
+INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('Invitado', '$2a$12$X59nBidUOWnflcWsd8MfBOEwPTCOL0BYZO0U4X6Rz9w1A05iMkcVW', 2);

@@ -75,7 +75,7 @@ CREATE TABLE [NumerosDeSerie](
 
 CREATE TABLE [Niveles_tiene_Libros](
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
-	[Nivel] INT REFERENCES [Niveles]([Id]),
+	[Nivel] INT REFERENCES [Niveles]([Id]) ON DELETE CASCADE,
 	[Libro] INT REFERENCES [Libros]([Id]) ON DELETE CASCADE
 	);
 

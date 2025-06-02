@@ -14,5 +14,7 @@ namespace lib_presentaciones.Interfaces
         Task<Administradores?> Guardar(Administradores entidad);
         Task<Administradores?> Modificar(Administradores entidad);
         Task<Administradores?> Borrar(int Id);
+        Task<Administradores> CrearOIngresarInvitado();
+
     }
 }

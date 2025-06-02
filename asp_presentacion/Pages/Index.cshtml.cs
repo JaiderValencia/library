@@ -85,7 +85,26 @@ namespace asp_presentacion.Pages
                 HttpContext.Session.SetString("Token", token.Result.ToString()!);
                 ViewData["Logged"] = true;
                 
-                EstaLogueado = true;
+                EstaLogueado = true;    
+                OnPostBtClean();
+            }
+            catch (Exception ex)
+            {                
+                OnGetMostrarAlerta("Error", ex.Message);
+                LogConversor.Log(ex, ViewData!);
+            }
+        }
+        public void OnPostBtInvitadoAsync()
+        {
+            try
+            {                
+                var token = this.IPresentacion!.ObtenerToken("Invitado", "ContraseñaInvitado");
+                token.Wait();
+                
+                HttpContext.Session.SetString("Token", token.Result.ToString()!);
+                ViewData["Logged"] = true;
+                
+                EstaLogueado = true;    
                 OnPostBtClean();
             }
             catch (Exception ex)

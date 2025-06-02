@@ -123,5 +123,21 @@ namespace lib_presentaciones.Implementaciones
 
             return JsonConversor.ConvertirAObjeto<Administradores>(JsonConversor.ConvertirAString(respuesta["Entidad"]));
         }
+        public async Task<Administradores> CrearOIngresarInvitado()
+        {
+            var datos = new Dictionary<string, object>
+            {
+                { "Bearer", token! }
+            };
+
+            datos = Comunicaciones.ConstruirUrl(datos, "Administradores/CrearOIngresarInvitado");
+            var respuesta = await Comunicaciones.Execute(datos);
+
+            if (respuesta.ContainsKey("Error"))
+                throw new Exception(respuesta["Error"].ToString()!);
+
+            return JsonConversor.ConvertirAObjeto<Administradores>(JsonConversor.ConvertirAString(respuesta["Entidad"]));
+        }
+
     }
 }

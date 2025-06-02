@@ -8,6 +8,7 @@ namespace lib_aplicaciones.Implementaciones
     public class NivelesAplicacion : INivelesAplicacion
     {
         private Conexion conexion = new Conexion();
+        private Niveles_tiene_LibrosAplicacion nivelesLibrosApp = new Niveles_tiene_LibrosAplicacion();
 
         public List<Niveles>? PorNombre(string nombre)
         {
@@ -39,15 +40,45 @@ namespace lib_aplicaciones.Implementaciones
 
         private void guardarLibroEnNivel(List<int> libros, int nivelId)
         {
-            foreach (var libroId in libros)
-            {
-                var nivelTieneLibro = new Niveles_tiene_Libros
-                {
-                    Libro = libroId,
-                    Nivel = nivelId
-                };
+            var nivelLibros = this.nivelesLibrosApp.PorNivel(nivelId);
 
-                this.conexion.Niveles_tiene_Libros!.Add(nivelTieneLibro);
+            if (libros == null && nivelLibros != null && nivelLibros.Count > 0)
+            {
+                foreach (var nivelLibro in nivelLibros)
+                {
+                    this.conexion!.Niveles_tiene_Libros!.Remove(nivelLibro);
+                }
+                this.conexion.SaveChanges();
+
+                return;
+            }
+
+            if (nivelLibros != null && libros != null)
+            {
+                foreach (var nivelLibro in nivelLibros)
+                {
+                    if (!libros.Contains(nivelLibro.Libro))
+                    {
+                        this.conexion!.Niveles_tiene_Libros!.Remove(nivelLibro);
+                    }
+                }
+            }
+
+            if (libros != null)
+            {
+                foreach (var libroId in libros)
+                {
+                    if (nivelLibros != null && nivelLibros.Any(x => x.Libro == libroId && x.Nivel == nivelId))
+                        continue;
+
+                    var nivelTieneLibro = new Niveles_tiene_Libros
+                    {
+                        Libro = libroId,
+                        Nivel = nivelId
+                    };
+
+                    this.conexion.Niveles_tiene_Libros!.Add(nivelTieneLibro);
+                }
             }
 
             this.conexion.SaveChanges();
@@ -115,8 +146,7 @@ namespace lib_aplicaciones.Implementaciones
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
 
-            if (entidad.Libros != null && entidad.Libros.Count() != 0)
-                this.guardarLibroEnNivel(entidad.Libros!, entidad.Id);
+            this.guardarLibroEnNivel(entidad.Libros!, entidad.Id);
 
             return entidad;
         }

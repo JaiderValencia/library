@@ -51,6 +51,14 @@ namespace lib_aplicaciones.Implementaciones
                 .FirstOrDefault(x => x.Id==Id);
         }
 
+        public List<Niveles_tiene_Libros> PorNivel(int nivelId)
+        {
+            return this.conexion!.Niveles_tiene_Libros!
+                .Include(Niveles_tiene_Libros => Niveles_tiene_Libros._Libro)
+                .Where(x => x.Nivel == nivelId)
+                .ToList();
+        }
+
         public Niveles_tiene_Libros? Modificar(Niveles_tiene_Libros? entidad)
 
 
@@ -60,7 +68,7 @@ namespace lib_aplicaciones.Implementaciones
 
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
-    
+
             var entry = this.conexion!.Entry<Niveles_tiene_Libros>(entidad);
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();

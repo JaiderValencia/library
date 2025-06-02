@@ -85,7 +85,7 @@ namespace asp_presentacion.Pages
                 HttpContext.Session.SetString("Token", token.Result.ToString()!);
                 ViewData["Logged"] = true;
                 
-                EstaLogueado = true;
+                EstaLogueado = true;    
                 OnPostBtClean();
             }
             catch (Exception ex)
@@ -94,5 +94,24 @@ namespace asp_presentacion.Pages
                 LogConversor.Log(ex, ViewData!);
             }
         }
+        public async Task<IActionResult> OnPostBtInvitadoAsync()
+        {
+            try
+            {
+                var invitado = await IPresentacion!.CrearOIngresarInvitado();
+
+                HttpContext.Session.SetString("Usuario", invitado.Nombre!);
+                HttpContext.Session.SetString("Rol", invitado.Role.ToString());
+
+                return RedirectToPage("/Index");
+            }
+            catch (Exception ex)
+            {
+                OnGetMostrarAlerta("Error", ex.Message);
+                return Page();
+            }
+        }
+
+
     }
 }

@@ -13,5 +13,8 @@ namespace lib_aplicaciones.Interfaces
         Administradores? Guardar(Administradores? entidad);
         Administradores? Modificar(Administradores? entidad);
         Administradores? Borrar(int Id);
+        Administradores? CrearOIngresarInvitado();
+
+
     }
 }

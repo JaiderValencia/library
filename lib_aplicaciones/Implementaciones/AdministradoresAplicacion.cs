@@ -122,5 +122,31 @@ namespace lib_aplicaciones.Implementaciones
             this.conexion.SaveChanges();
             return entidad;
         }
+        public Administradores CrearOIngresarInvitado()
+        {
+            var usuario = this.conexion.Administradores!.FirstOrDefault(a => a.Nombre == "invitado");
+
+            if (usuario != null)
+                return usuario;
+
+            var rol = this.conexion.Roles!.FirstOrDefault(r => r.Nombre == "Invitado");
+            if (rol == null)
+                throw new Exception("No existe el rol 'Invitado'");
+
+            var nuevo = new Administradores
+            {
+                Nombre = "invitado",
+                Password = "invitado",
+                Role = rol.Id
+            };
+
+            this.conexion.Administradores!.Add(nuevo);
+            this.conexion.SaveChanges();
+
+            nuevo.Password = null;
+            return nuevo;
+        }
+
+
     }
 }

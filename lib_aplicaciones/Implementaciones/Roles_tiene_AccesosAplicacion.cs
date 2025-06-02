@@ -43,8 +43,15 @@ namespace lib_aplicaciones.Implementaciones
         {
             return this.conexion!.Roles_tiene_Accesos!
                 .Include(Roles_tiene_Accesos => Roles_tiene_Accesos._Acceso)
-                .Include(Roles_tiene_Accesos => Roles_tiene_Accesos._Rol)
+                .Include(Roles_tiene_Accesos => Roles_tiene_Accesos._Role)
                 .FirstOrDefault(x => x.Id==Id);
+        }
+
+        public List<Roles_tiene_Accesos> PorRol(int rolId)
+        {
+            return this.conexion!.Roles_tiene_Accesos!                
+                .Where(x => x.Role == rolId)
+                .ToList();
         }
 
         public Roles_tiene_Accesos? Modificar(Roles_tiene_Accesos? entidad)

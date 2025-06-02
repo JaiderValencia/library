@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace lib_dominio.Entidades
 {
@@ -6,5 +7,8 @@ namespace lib_dominio.Entidades
     {
         [Key] public int Id { get; set; }
         public string? Nombre { get; set; }
+
+        [NotMapped] public int CantidadPermisos { get; set; }
+        [NotMapped] public List<int>? Accesos { get; set; }
     }
 }

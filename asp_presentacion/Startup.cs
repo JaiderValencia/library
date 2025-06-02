@@ -13,7 +13,8 @@ namespace asp_presentacion
         public static IConfiguration? Configuration { set; get; }
         public void ConfigureServices(WebApplicationBuilder builder, IServiceCollection services)
         {
-            // Presentaciones
+            // Presentaciones            
+            services.AddScoped<IAccesosPresentacion, AccesosPresentacion>();
             services.AddScoped<IAdministradoresPresentacion, AdministradoresPresentacion>();
             services.AddScoped<IRolesPresentacion, RolesPresentacion>();
             services.AddScoped<IAutoresPresentacion, AutoresPresentacion>();

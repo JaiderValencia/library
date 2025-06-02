@@ -121,7 +121,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var entidad = JsonConversor.ConvertirAObjeto<Roles>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var entidad = JsonConversor.ConvertirAObjeto<Roles>(datos["Entidad"].ToString()!);
 
                 entidad = this.iRolesAplicacion!.Guardar(entidad);
 
@@ -150,7 +150,7 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }
 
-                var entidad = JsonConversor.ConvertirAObjeto<Roles>(JsonConversor.ConvertirAString(datos["Entidad"]));
+                var entidad = JsonConversor.ConvertirAObjeto<Roles>(datos["Entidad"].ToString()!);
 
                 entidad = this.iRolesAplicacion!.Modificar(entidad);
 

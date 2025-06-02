@@ -9,7 +9,7 @@ namespace lib_dominio.Entidades
         public int Role { get; set; }
         public int Acceso { get; set; }
 
-        [ForeignKey("Rol")] public Roles? _Rol { get; set; }
+        [ForeignKey("Role")] public Roles? _Role { get; set; }
         [ForeignKey("Acceso")] public Accesos? _Acceso { get; set; }
     }
 }

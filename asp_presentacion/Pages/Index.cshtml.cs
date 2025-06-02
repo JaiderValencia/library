@@ -94,24 +94,24 @@ namespace asp_presentacion.Pages
                 LogConversor.Log(ex, ViewData!);
             }
         }
-        public async Task<IActionResult> OnPostBtInvitadoAsync()
+        public void OnPostBtInvitadoAsync()
         {
             try
-            {
-                var invitado = await IPresentacion!.CrearOIngresarInvitado();
-
-                HttpContext.Session.SetString("Usuario", invitado.Nombre!);
-                HttpContext.Session.SetString("Rol", invitado.Role.ToString());
-
-                return RedirectToPage("/Index");
+            {                
+                var token = this.IPresentacion!.ObtenerToken("Invitado", "ContraseñaInvitado");
+                token.Wait();
+                
+                HttpContext.Session.SetString("Token", token.Result.ToString()!);
+                ViewData["Logged"] = true;
+                
+                EstaLogueado = true;    
+                OnPostBtClean();
             }
             catch (Exception ex)
-            {
+            {                
                 OnGetMostrarAlerta("Error", ex.Message);
-                return Page();
+                LogConversor.Log(ex, ViewData!);
             }
         }
-
-
     }
 }

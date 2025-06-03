@@ -24,7 +24,8 @@ CREATE TABLE [Accesos](
 CREATE TABLE Roles_tiene_Accesos(
 	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
 	[Role] INT NOT NULL REFERENCES Roles(Id) ON DELETE CASCADE,
-	[Acceso] INT NOT NULL REFERENCES Accesos(Id) ON DELETE CASCADE
+	[Acceso] INT NOT NULL REFERENCES Accesos(Id) ON DELETE CASCADE,
+	[Acciones] TEXT NOT NULL
 );
 
 CREATE TABLE [Auditorias](
@@ -225,22 +226,22 @@ INSERT INTO [Accesos] ([Nombre]) VALUES
 ('Niveles_tiene_Libros'),
 ('Roles_tiene_Accesos');
 
-INSERT INTO [Roles_tiene_Accesos] ([Role], [Acceso]) VALUES 
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(1, 5),
-(1, 6),
-(1, 7),
-(1, 8),
-(1, 9),
-(1, 10),
-(1, 11),
-(1, 12),
-(1, 13),
-(1, 14),
-(1, 15);
+INSERT INTO [Roles_tiene_Accesos] ([Role], [Acceso], [Acciones]) VALUES 
+(1, 1, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 2, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 3, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 4, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 5, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 6, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 7, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 8, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 9, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 10, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 11, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 12, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 13, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 14, 'Listar, Por, Borrar, Crear, Guardar'),
+(1, 15, 'Listar, Por, Borrar, Crear, Guardar');
 
 INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('admin', '$2a$11$ER55nUgrwT5IYUQLYEJRYO69qLYJzaE4uZJNLD4NR2ojMVy2OfG7G', 1);
 
@@ -249,6 +250,6 @@ INSERT INTO Roles (Nombre) VALUES ('Invitado');
 DECLARE @rolInvitado INT = (SELECT Id FROM Roles WHERE Nombre = 'Invitado');
 DECLARE @accesoLibros INT = (SELECT Id FROM Accesos WHERE Nombre = 'Libros');
 
-INSERT INTO Roles_tiene_Accesos (Role, Acceso) VALUES (@rolInvitado, @accesoLibros);
+INSERT INTO Roles_tiene_Accesos (Role, Acceso, Acciones) VALUES (@rolInvitado, @accesoLibros, 'Listar, Por');
 
 INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('Invitado', '$2a$12$X59nBidUOWnflcWsd8MfBOEwPTCOL0BYZO0U4X6Rz9w1A05iMkcVW', 2);

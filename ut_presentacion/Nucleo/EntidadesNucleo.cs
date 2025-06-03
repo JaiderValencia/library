@@ -85,5 +85,46 @@ namespace ut_presentacion.Nucleo
             entidad.NumeroSerie = 1;
             return entidad;
         }
+        public static Accesos? Accesos()
+        {
+            var entidad = new Accesos();
+            entidad.Nombre = "Prueba";
+            return entidad;
+        }
+
+        public static Administradores? Administradores()
+        {
+            var entidad = new Administradores();
+            entidad.Nombre = "Prueba";
+            entidad.Password = "PB123";
+            entidad.Role = 1;
+            return entidad;
+        }
+
+        public static Auditorias? Auditorias()
+        {
+            var entidad = new Auditorias();
+            entidad.Accion = "Prueba";
+            entidad.Fecha = DateTime.Now;
+            entidad.Administrador = "Prueba";
+            return entidad;
+        }
+
+        public static Roles? Roles()
+        {
+            var entidad = new Roles();
+            entidad.Nombre = "Prueba";
+            entidad.Accesos = [1,2,3];
+            entidad.CantidadPermisos = 2;
+            return entidad;
+        }
+
+        public static Roles_tiene_Accesos? Roles_tiene_Accesos()
+        {
+            var entidad = new Roles_tiene_Accesos();
+            entidad.Acceso = 1;
+            entidad.Role = 1;
+            return entidad;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using lib_aplicaciones.Interfaces;
+﻿using System.Security.Cryptography.X509Certificates;
+using lib_aplicaciones.Interfaces;
 using lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace lib_aplicaciones.Implementaciones
             return entidad;
         }
 
-        public void GuardarAccesoRol(List<int> accesos, int rolId)
+        public void GuardarAccesoRol(List<int> accesos, int rolId, List<string>? acciones)
         {
             var accesosRole = this.rolesAccesosApp.PorRol(rolId);
 
@@ -70,13 +71,26 @@ namespace lib_aplicaciones.Implementaciones
                 foreach (var acceso in accesos)
                 {
                     if (accesosRole != null && accesosRole.Any(x => x.Acceso == acceso && x.Role == rolId))
-                        continue;
+                    {
+                        int index = accesosRole.FindIndex(x => x.Acceso == acceso && x.Role == rolId);
 
-                    this.conexion!.Roles_tiene_Accesos!.Add(new Roles_tiene_Accesos
+                        if (index != -1)
+                        {
+                            accesosRole[index].ListaAacciones(acciones);
+                        }
+
+                        continue;
+                    }
+
+                    var RolesAccesos = new Roles_tiene_Accesos
                     {
                         Role = rolId,
                         Acceso = acceso
-                    });
+                    };
+
+                    RolesAccesos.ListaAacciones(acciones);
+
+                    this.conexion!.Roles_tiene_Accesos!.Add(RolesAccesos);
                 }
             }
 
@@ -95,7 +109,7 @@ namespace lib_aplicaciones.Implementaciones
             this.conexion.SaveChanges();
 
             if (entidad.Accesos != null)
-                this.GuardarAccesoRol(entidad.Accesos, entidad.Id);
+                this.GuardarAccesoRol(entidad.Accesos, entidad.Id, entidad.accionesRolAccesos);
 
             return entidad;
         }
@@ -123,10 +137,18 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbNoSeEncontro");
 
 
-            rol.Accesos = this.conexion.Roles_tiene_Accesos!
+            var RolAccesos = this.conexion.Roles_tiene_Accesos!
             .Where(x => x.Role == rol.Id)
-            .Select(x => x.Acceso)
+            .Select(x => new Roles_tiene_Accesos
+            {
+                Acceso = x.Acceso,
+                Acciones = x.Acciones
+            })
             .ToList();
+
+            rol.Accesos = RolAccesos.Select(x => x.Acceso).ToList();
+
+            rol.accionesRolAccesos = RolAccesos.FirstOrDefault()?.AccionesALista();
 
             rol.CantidadPermisos = this.conexion!.Roles_tiene_Accesos!.Count(x => x.Role == rol.Id);
 
@@ -145,7 +167,7 @@ namespace lib_aplicaciones.Implementaciones
             entry.State = EntityState.Modified;
             this.conexion.SaveChanges();
 
-            GuardarAccesoRol(entidad.Accesos!, entidad.Id);
+            GuardarAccesoRol(entidad.Accesos!, entidad.Id, entidad.accionesRolAccesos);
 
             return entidad;
         }

@@ -122,7 +122,7 @@ namespace asp_servicios.Controllers
 
                 bool validarId = this.administradoresAplicacion.PorId(administradorId) != null;
 
-                bool validarAcceso = this.accesosAplicacion!.validarAcceso(administradorId, AccesoId ?? 0);
+                bool validarAcceso = this.accesosAplicacion!.validarAcceso(administradorId, AccesoId ?? 0, ruta);
 
                 if (validarTiempo && validarId && validarAcceso && !ruta.ToLower().Contains("auditorias"))
                 {

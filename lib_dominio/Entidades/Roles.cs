@@ -10,5 +10,7 @@ namespace lib_dominio.Entidades
 
         [NotMapped] public int CantidadPermisos { get; set; }
         [NotMapped] public List<int>? Accesos { get; set; }
+
+        [NotMapped] public List<string>? accionesRolAccesos { get; set; }
     }
 }

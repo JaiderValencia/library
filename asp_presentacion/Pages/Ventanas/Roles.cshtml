@@ -118,6 +118,27 @@ lib_dominio.Nucleo.Enumerables.Ventanas.Crear)
                     }
                 </select>
             </div>
+            <div class='="form-group mt-4'>
+                <label for="acciones">
+                    Selecciona las acciones para el rol
+                </label>
+
+                <select asp-for="@Model.Rol.accionesRolAccesos" id="acciones" class="form-select" multiple>
+                    @if (Model.opcionesAcciones == null || Model.opcionesAcciones.Count == 0)
+                    {
+                        <option value="">No hay accesos disponibles</option>
+                    }
+                    else
+                    {
+                        @foreach (var Accion in Model.opcionesAcciones)
+                        {
+                            <option value="@Accion">
+                                @Accion
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
             <div class="form-group mt-4">
                 <input type="submit" value="Guardar" asp-page-handler=@(Model.VentanaActual ==
                                                                         lib_dominio.Nucleo.Enumerables.Ventanas.Editar ? "Modificar" : "Crear") class="btn btn-primary" />

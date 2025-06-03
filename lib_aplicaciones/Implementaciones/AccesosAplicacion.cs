@@ -51,20 +51,28 @@ namespace lib_aplicaciones.Implementaciones
             return this.conexion!.Accesos!.FirstOrDefault(x => x.Id == Id);
         }
 
-        public bool validarAcceso(int AdministradorId, int AccesoId)
+        public bool validarAcceso(int AdministradorId, int AccesoId, string ruta)
         {
             var acceso = this.conexion!.Accesos!
                 .FirstOrDefault(x => x.Id == AccesoId);
 
             if (acceso == null)
-                throw new Exception("lbNoExisteAcceso");                        
+                throw new Exception("lbNoExisteAcceso");
 
             var roleAdministrador = this.conexion!.Administradores!
                 .FirstOrDefault(Administrador => Administrador.Id == AdministradorId)!.Role;
 
-            var tieneAcceso = this.conexion!.Roles_tiene_Accesos!.Any(x => x.Acceso == AccesoId && x.Role == roleAdministrador);
+            var RolAcceso = this.conexion!.Roles_tiene_Accesos!.FirstOrDefault(x => x.Acceso == AccesoId && x.Role == roleAdministrador);
 
-            return tieneAcceso;
+            if (RolAcceso == null || string.IsNullOrEmpty(RolAcceso.Acciones))
+                return false;
+
+            if (ruta.Split("/")[2].Contains("Por"))
+            {
+                return RolAcceso.Acciones.Contains("Listar");
+            }
+
+            return RolAcceso.Acciones.Contains(ruta.Split("/")[2]);
         }
 
         public Accesos? Modificar(Accesos? entidad)

@@ -227,21 +227,21 @@ INSERT INTO [Accesos] ([Nombre]) VALUES
 ('Roles_tiene_Accesos');
 
 INSERT INTO [Roles_tiene_Accesos] ([Role], [Acceso], [Acciones]) VALUES 
-(1, 1, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 2, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 3, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 4, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 5, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 6, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 7, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 8, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 9, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 10, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 11, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 12, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 13, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 14, 'Listar, Por, Borrar, Crear, Guardar'),
-(1, 15, 'Listar, Por, Borrar, Crear, Guardar');
+(1, 1, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 2, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 3, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 4, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 5, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 6, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 7, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 8, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 9, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 10, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 11, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 12, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 13, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 14, 'Listar, Por, Borrar, Crear, Guardar, Modificar'),
+(1, 15, 'Listar, Por, Borrar, Crear, Guardar, Modificar');
 
 INSERT INTO [Administradores] ([Nombre], [Password], [Role]) VALUES ('admin', '$2a$11$ER55nUgrwT5IYUQLYEJRYO69qLYJzaE4uZJNLD4NR2ojMVy2OfG7G', 1);
 

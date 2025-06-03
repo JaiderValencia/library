@@ -16,6 +16,15 @@ namespace asp_presentacion.Pages.Ventanas
 
         [BindProperty] public Roles? Rol { get; set; } = null;
         public Enumerables.Ventanas VentanaActual { get; set; } = Enumerables.Ventanas.Listas;
+
+        public List<string> opcionesAcciones = new List<string>
+        {
+            "Listar",
+            "Borrar",
+            "Crear",
+            "Guardar"
+        };
+
         public Dictionary<string, int> opcionesBuscador { get; } = new Dictionary<string, int>
         {
             { "PorId", 1 },
